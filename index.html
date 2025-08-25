@@ -4,25 +4,172 @@
   <meta charset="UTF-8">
   <title>Quant Portfolio - Arnav Nair</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #fdfdfd; }
-    h1 { color: #003366; }
-    .project { margin-bottom: 20px; }
-    a { color: #0066cc; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #0d0d0d; /* black background */
+      color: #e0d7e9; /* light aubergine/gray text */
+      line-height: 1.6;
+    }
+
+    header {
+      background: #1a1a1a;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #a020f0; /* aubergine/purple accent */
+    }
+
+    header p {
+      font-size: 1.1em;
+      color: #cccccc;
+    }
+
+    .about {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: #141414;
+    }
+
+    .about img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin-right: 30px;
+      border: 3px solid #a020f0;
+    }
+
+    .about-text {
+      max-width: 600px;
+    }
+
+    .about-text h2 {
+      color: #ff4c4c; /* red accent */
+    }
+
+    .projects {
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project {
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 20px;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      background: #292929;
+    }
+
+    .project h2 {
+      margin-top: 0;
+      color: #a020f0;
+    }
+
+    .project p {
+      color: #cccccc;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #0d0d0d;
+      font-size: 0.9em;
+    }
+
+    a {
+      color: #ff4c4c; /* red links */
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .social {
+      margin-top: 10px;
+    }
+
+    .social a {
+      background: #a020f0;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-block;
+      transition: background 0.3s;
+    }
+
+    .social a:hover {
+      background: #ff4c4c;
+    }
   </style>
 </head>
 <body>
-  <h1>Quantitative Research & Trading Portfolio</h1>
-  <p>Welcome! Below are selected projects demonstrating my skills in quantitative finance, statistical modeling, and algorithmic trading.</p>
+  <header>
+    <h1>Quantitative Research & Trading Portfolio</h1>
+    <p>Projects showcasing quantitative finance, algorithmic trading, and statistical modeling.</p>
+    <div class="social">
+      <a href="https://www.linkedin.com/in/arnav-nair-005b82250/" target="_blank">LinkedIn</a>
+    </div>
+  </header>
 
-  <div class="project">
-    <h2><a href="https://github.com/arnavnair229/kalman-filter-MR">Statistical Arbitrage: SPY vs Biotech</a></h2>
-    <p>Pairs trading strategy using cointegration tests and mean-reversion models on SPY and biotech ETFs.</p>
-  </div>
+  <section class="about">
+    <img src="Nair, Arnav_Headshot.jpeg" alt="Arnav Nair">
+    <div class="about-text">
+      <h2>About Me</h2>
+      <p>
+        Hi, I’m <strong>Arnav Nair</strong>, a quantitative researcher passionate about developing 
+        systematic trading strategies and applying advanced statistical methods to financial markets. 
+        My work spans from Kalman filtering and Markov Chains to options backtesting and statistical arbitrage. 
+        I enjoy bridging the gap between theory and implementation, with an emphasis on risk management 
+        and real-world applicability.
+      </p>
+    </div>
+  </section>
 
-  <div class="project">
-    <h2><a href="https://github.com/arnavnair229/markov-chain-strat">Kalman Filter Stock Prediction</a></h2>
-    <p>Applied a Kalman filter with VIX-based noise estimation to smooth and predict SPY price movements.</p>
-  </div>
+  <section class="projects">
+    <div class="project">
+      <h2><a href="https://github.com/arnavnair229/kalman-filter-MR">Statistical Arbitrage with Kalman Filtering</a></h2>
+      <p>
+        Developed a mean-reversion strategy applying Kalman Filtering to model the spread between SPY and 
+        synthetic SPY ETF. Used cointegration testing to confirm equilibrium relationships, with dynamic 
+        hedge ratios updated in real-time. Backtests include Sharpe ratios, drawdowns, and volatility regimes.
+      </p>
+    </div>
+
+    <div class="project">
+      <h2><a href="https://github.com/arnavnair229/markov-chain-strat">Markov Chain Market Regime Strategy</a></h2>
+      <p>
+        Constructed a Markov Chain model to capture transition probabilities between up and down market days. 
+        Strategy identifies recurring patterns for directional trading while layering in hedging strategies. 
+      </p>
+    </div>
+
+    <!-- <div class="project">
+      <h2><a href="https://github.com/arnavnair229/options-wheel-backtest">Options Wheel Backtest</a></h2>
+      <p>
+        Backtested the Options Wheel strategy on SPY options, analyzing position sizing, assignment scenarios, 
+        and return profiles under varying volatility conditions. Provides a framework for evaluating systematic 
+        options income strategies.
+      </p>
+    </div> -->
+  </section>
+
+  <footer>
+    © 2025 Arnav Nair | Built using GitHub Pages
+  </footer>
 </body>
 </html>
