@@ -36,7 +36,7 @@ class VolatilitySurface {
       // Scale factors to map data to 3D space
       scaleX: 12,  // spread of strike axis
       scaleY: 10,  // spread of maturity axis
-      scaleZ: 6,   // height multiplier for sigma values
+      scaleZ: 20,  // height multiplier for sigma values (v2 surface has smaller sigma range)
     };
   }
 
