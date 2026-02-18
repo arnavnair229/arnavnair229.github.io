@@ -1,0 +1,56 @@
+{
+  "spread": [
+    {"time": 0, "value": 0.15},
+    {"time": 1, "value": 0.22},
+    {"time": 2, "value": 0.35},
+    {"time": 3, "value": 0.48},
+    {"time": 4, "value": 0.62},
+    {"time": 5, "value": 0.71},
+    {"time": 6, "value": 0.68},
+    {"time": 7, "value": 0.55},
+    {"time": 8, "value": 0.42},
+    {"time": 9, "value": 0.28},
+    {"time": 10, "value": 0.15},
+    {"time": 11, "value": 0.08},
+    {"time": 12, "value": -0.05},
+    {"time": 13, "value": -0.18},
+    {"time": 14, "value": -0.32},
+    {"time": 15, "value": -0.45},
+    {"time": 16, "value": -0.58},
+    {"time": 17, "value": -0.66},
+    {"time": 18, "value": -0.62},
+    {"time": 19, "value": -0.51},
+    {"time": 20, "value": -0.38},
+    {"time": 21, "value": -0.22},
+    {"time": 22, "value": -0.08},
+    {"time": 23, "value": 0.05},
+    {"time": 24, "value": 0.18},
+    {"time": 25, "value": 0.32},
+    {"time": 26, "value": 0.41},
+    {"time": 27, "value": 0.52},
+    {"time": 28, "value": 0.38},
+    {"time": 29, "value": 0.25},
+    {"time": 30, "value": 0.12}
+  ],
+  "signals": [
+    {"time": 5, "type": "short", "value": 0.71},
+    {"time": 11, "type": "close", "value": 0.08},
+    {"time": 16, "type": "long", "value": -0.58},
+    {"time": 22, "type": "close", "value": -0.08},
+    {"time": 27, "type": "short", "value": 0.52}
+  ],
+  "equity": [
+    {"time": 0, "value": 100},
+    {"time": 5, "value": 100},
+    {"time": 11, "value": 104.2},
+    {"time": 16, "value": 104.2},
+    {"time": 22, "value": 107.8},
+    {"time": 27, "value": 107.8},
+    {"time": 30, "value": 109.5}
+  ],
+  "statistics": {
+    "winRate": 0.60,
+    "sharpeRatio": 1.42,
+    "maxDrawdown": -0.03
+  }
+}
