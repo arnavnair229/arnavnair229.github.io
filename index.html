@@ -15,10 +15,12 @@
       (function () {
         var c = document.documentElement.classList;
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) { c.add("reduce-motion"); return; }
-        if (location.hash.length > 1) return;
-        var seen = false;
-        try { seen = sessionStorage.getItem("intro-seen") === "1"; } catch (e) {}
-        c.add(seen ? "intro-short" : "intro-full");
+        var nav = performance.getEntriesByType("navigation")[0];
+        var type = nav ? nav.type : "navigate";
+        // Plays on every load and refresh. Not when coming back with the back button, or arriving on a shared panel link.
+        if (type === "back_forward") return;
+        if (type !== "reload" && location.hash.length > 1) return;
+        c.add("intro-full");
       })();
     </script>
   </head>

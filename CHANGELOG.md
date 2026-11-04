@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0 (November 2026)
+
+- New CRT turn-on at the remote click: glowing dot, white line, the picture snaps open with a glitch, and phosphor glow and scanlines fade out.
+- The intro now plays on every load and refresh, but not when moving between tabs or returning with the back button. A shared link to a panel goes straight to that panel.
+- Leftover scroll momentum and stray key presses no longer cancel the intro, and clicks only cancel it on links and buttons. Skip sits at the bottom right.
+
 ## 3.0.0 (November 2026)
 
 - Redesigned as a plain editorial page: paper background, one serif, one accent color, thin rules instead of cards.

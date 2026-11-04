@@ -40,6 +40,7 @@ export default function App() {
     <>
       <a href="#main" className="sr-only z-[70] bg-ink px-3 py-2 text-paper focus:not-sr-only focus:fixed focus:left-3 focus:top-3">Skip to content</a>
       <div aria-hidden="true" className="tv-screen" />
+      <div aria-hidden="true" className="crt"><i className="crt-glow" /><i className="crt-scan" /><i className="crt-line" /><i className="crt-dot" /></div>
       <div id="intro-layer" aria-hidden="true" className="intro-layer" />
       <button id="skip-intro" type="button" hidden className="fixed bottom-5 right-5 z-[65] min-h-[44px] bg-paper px-4 text-ink underline">Skip intro</button>
 
