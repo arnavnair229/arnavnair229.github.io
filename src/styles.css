@@ -18,7 +18,7 @@
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
-html { background: var(--color-ink); color: var(--color-paper); scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+html { background: var(--color-ink); color: var(--color-paper); -webkit-text-size-adjust: 100%; }
 body { font-family: var(--font-sans); line-height: 1.6; overflow-x: clip; }
 :focus-visible { outline: 3px solid var(--color-sun); outline-offset: 3px; border-radius: 4px; }
 a, button { touch-action: manipulation; }
@@ -38,22 +38,20 @@ button { cursor: pointer; }
 
 /* Intro: the nav waits, unfilled, for the mascot's cards to land. It stays clickable. */
 .intro-pending [data-nav]:not(.landed) { background: transparent; border-color: transparent; color: var(--color-muted); }
-.intro-pending .hero-mascot { transform: scale(.55); }
+.intro-pending .hero-mascot { transform: scale(.55); transform-origin: 50% 100%; }
 .fly-card { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; visibility: hidden; will-change: transform; }
 
-/* Idle loops */
-.mascot-belly { transform-box: fill-box; transform-origin: 50% 60%; }
-.mascot-arm-l { transform-box: fill-box; transform-origin: 100% 40%; }
-.mascot-arm-r { transform-box: fill-box; transform-origin: 0% 40%; }
-.mascot-mouth { transform-box: fill-box; transform-origin: 50% 50%; }
-.mascot-root { transform-box: fill-box; transform-origin: 50% 100%; }
-.idle .mascot-belly { animation: breathe 3.6s ease-in-out infinite; }
-.snoring .mascot-zzz { animation: zzz 3.6s ease-in-out infinite; }
-.snoring .mascot-eye { transform-box: fill-box; transform-origin: center; transform: scaleY(.12); }
-@keyframes breathe { 50% { transform: scale(1.035, .975); } }
-@keyframes zzz { 0% { opacity: 0; transform: translate(0, 8px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -22px); } }
+.idle { animation: breathe 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes breathe { 50% { transform: scale(1.03, .975); } }
 
-/* Border characters only exist where the gutter is wide enough to keep them off the content. */
+.tile { transition: transform .18s ease-out, border-color .18s ease-out; }
+.tile:hover { transform: translateY(-4px) rotate(-.6deg); border-color: var(--color-sun); }
+.tile:active { transform: scale(.97); }
+.view-in { animation: view-in .24s ease-out; }
+@keyframes view-in { from { opacity: 0; transform: translateY(12px); } }
+[data-nav][aria-current="page"] { border-color: var(--color-sun); color: var(--color-sun); }
+
+/* Border characters appear only when hero-character exists and the gutter keeps them off the content. */
 .buddy { display: none; position: fixed; bottom: 24px; width: 104px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .3s ease-out; }
 .buddy-l { left: 20px; }
 .buddy-r { right: 20px; transform: scaleX(-1); }

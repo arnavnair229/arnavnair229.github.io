@@ -1,10 +1,9 @@
 import { useState } from "react";
 import kalman from "../data/kalman.json";
-import { LINKS, W_COMMS_PUBLIC, W_COMMS_URL } from "../config";
+import { LINKS, NAV, W_COMMS_PUBLIC, W_COMMS_URL } from "../config";
 import { education, experience, skills } from "../data/resume";
 import { AssetSlot, slotUrl } from "./AssetSlot";
 import { EquityChart, MiniSurface, Sparkline, SurfaceTable } from "./Charts";
-import { Mascot } from "./Mascot";
 
 const pct = (v: number) => `${v > 0 ? "+" : ""}${(v * 100).toFixed(1)}%`;
 const ExtLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -13,10 +12,10 @@ const ExtLink = ({ href, children }: { href: string; children: React.ReactNode }
 
 function SectionHead({ id, eyebrow, title, intro }: { id: string; eyebrow: string; title: string; intro?: string }) {
   return (
-    <header className="mb-8 max-w-3xl">
+    <header className="mb-5 max-w-3xl">
       <p className="eyebrow">{eyebrow}</p>
-      <h2 id={`${id}-title`} className="mt-2 font-display text-4xl font-bold leading-tight md:text-5xl">{title}</h2>
-      {intro && <p className="mt-3 text-lg text-muted">{intro}</p>}
+      <h2 id={`${id}-title`} className="mt-2 font-display text-3xl font-bold leading-tight md:text-5xl">{title}</h2>
+      {intro && <p className="mt-2 text-muted md:text-lg">{intro}</p>}
     </header>
   );
 }
@@ -29,33 +28,50 @@ const Stat = ({ label, value, sub }: { label: string; value: string; sub?: strin
   </div>
 );
 
-export function Hero() {
+export function Home() {
   const headshot = slotUrl("about-headshot");
+  const character = slotUrl("hero-character");
   return (
-    <section id="top" className="hero-scrim relative mx-auto flex min-h-dvh max-w-6xl flex-col items-center justify-center px-5 pb-28 pt-24 text-center md:pb-16">
-      <Mascot className="hero-mascot mb-4 h-auto w-[52vw] max-w-[300px] md:w-[300px]" />
-      <h1 className="font-display text-5xl font-extrabold leading-none md:text-7xl">Arnav Nair</h1>
-      <p className="mt-3 font-display text-2xl font-semibold text-sun md:text-3xl">Quant × AI × Portfolio</p>
-      <p className="mt-4 max-w-2xl text-lg text-muted">
-        Quantitative Researcher Intern in fixed income at Morgan Stanley, joining full-time in January 2027. I build research systems with LLM agents, and I publish the results when they fail too.
-      </p>
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <a className="btn btn-primary" href="#research">See the research</a>
-        <a className="btn" href={LINKS.resumePdf} download>Download resume</a>
+    <div className="mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-5 pb-24 pt-8 md:pb-10 md:pt-20">
+      <div className="hero-scrim relative flex flex-col items-center text-center">
+        {character && (character.endsWith(".webm")
+          ? <video className="hero-mascot mb-3 h-auto w-[46vw] max-w-[260px]" src={character} autoPlay muted loop playsInline aria-hidden="true" />
+          : <img className="hero-mascot mb-3 h-auto w-[46vw] max-w-[260px]" src={character} alt="" />)}
+        {headshot && !character && <img src={headshot} alt="Arnav Nair" width="72" height="72" className="mb-3 h-[72px] w-[72px] rounded-full object-cover" />}
+        <h1 className="hero-title font-display text-6xl font-extrabold leading-none md:text-8xl">Arnav Nair</h1>
+        <p className="mt-2 font-display text-2xl font-semibold text-sun md:text-3xl">Quant × AI × Portfolio</p>
+        <p className="mt-3 max-w-2xl text-muted md:text-lg">Quantitative Researcher Intern in fixed income at Morgan Stanley, joining full-time in January 2027. I build research systems with LLM agents, and I publish the results when they fail too.</p>
       </div>
-      {headshot && <img src={headshot} alt="Arnav Nair" width="64" height="64" className="mt-6 h-16 w-16 rounded-full object-cover" />}
-    </section>
+      <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-5">
+        {NAV.map((n, i) => (
+          <a key={n.id} href={`#${n.id}`} data-card className={`tile panel group flex min-h-[116px] flex-col justify-between p-4 ${i === 0 ? "col-span-2 md:col-span-1" : ""}`}>
+            <span className="font-display text-2xl font-bold group-hover:text-sun">{n.label}</span>
+            <span className="mt-2 text-sm">{n.teaser}<span className="num mt-1 block text-xs text-muted">{n.stat}</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Tabs<T extends string>({ label, value, onChange, options }: { label: string; value: T; onChange: (v: T) => void; options: [T, string][] }) {
+  return (
+    <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={label}>
+      {options.map(([v, text]) => <button key={v} type="button" aria-pressed={value === v} onClick={() => onChange(v)} className={`btn ${value === v ? "btn-primary" : ""}`}>{text}</button>)}
+    </div>
   );
 }
 
 export function Research() {
   const m = kalman.metrics;
+  const [tab, setTab] = useState<"kalman" | "surface">("kalman");
   return (
-    <section id="research" aria-labelledby="research-title" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
+    <div>
       <SectionHead id="research" eyebrow="Quant" title="Research that shows its work"
-        intro="Every number here is generated by the linked repo and reproduces from pinned data. Where a strategy has no edge, the page says so." />
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
-        <article data-card className="panel min-w-0 p-5 md:p-7">
+        intro="Every number is generated by the linked repo. Where a strategy has no edge, the page says so." />
+      <Tabs label="Research projects" value={tab} onChange={setTab} options={[["kalman", "Kalman pairs"], ["surface", "Obesity surface"]]} />
+      <div className="grid grid-cols-[minmax(0,1fr)]">
+        <article hidden={tab !== "kalman"} data-card className="panel min-w-0 p-5 md:p-7">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h3 className="font-display text-3xl font-bold">Kalman-filter pairs trading</h3>
             <span className="num rounded-md border border-coral px-2 py-1 text-xs">Result: no out-of-sample edge</span>
@@ -76,7 +92,7 @@ export function Research() {
           <div className="mt-4 flex flex-wrap gap-3"><ExtLink href={LINKS.kalman}>Code and full results</ExtLink></div>
         </article>
 
-        <article data-card className="panel min-w-0 p-5 md:p-7">
+        <article hidden={tab !== "surface"} data-card className="panel min-w-0 p-5 md:p-7">
           <h3 className="font-display text-3xl font-bold">US obesity threshold surface</h3>
           <p className="mt-3 max-w-3xl text-muted">
             Option-style machinery on CDC state data: how likely prevalence is to cross a level over a horizon, inverted into an implied σ surface. It is the wireframe behind this page. These are historical-frequency probabilities, not risk-neutral prices, and nothing here trades.
@@ -95,7 +111,7 @@ export function Research() {
           <div className="mt-4 flex flex-wrap gap-3"><ExtLink href={LINKS.surface}>Code and data</ExtLink></div>
         </article>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -124,7 +140,7 @@ const aiProjects = [
 
 export function Projects() {
   return (
-    <section id="projects" aria-labelledby="projects-title" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
+    <div>
       <SectionHead id="projects" eyebrow="AI" title="Built with LLMs, on purpose"
         intro="I build with LLM agents and I say so. My job is the design, the verification and the decision about what to believe." />
       <div className="grid gap-6 md:grid-cols-2">
@@ -140,16 +156,19 @@ export function Projects() {
           </article>
         ))}
       </div>
-    </section>
+      <OpenSource />
+    </div>
   );
 }
+
+const TextArt = ({ text }: { text: string }) => <div className="flex h-full items-center justify-center font-display text-3xl font-bold text-sun" aria-hidden="true">{text}</div>;
 
 type Tag = "Quant" | "AI" | "Open Source";
 const grid: { slot: string; name: string; blurb: string; tags: Tag[]; href: string | null; art: React.ReactNode }[] = [
   { slot: "project-kalman", name: "Kalman pairs trading", blurb: "Dynamic hedge ratio, walk-forward test, honest negative result.", tags: ["Quant"], href: LINKS.kalman, art: <Sparkline /> },
   { slot: "project-surface", name: "Obesity threshold surface", blurb: "Implied σ surface from CDC data, with stress tests on the claims.", tags: ["Quant"], href: LINKS.surface, art: <MiniSurface /> },
-  { slot: "project-wcomms", name: "W-Comms", blurb: "Coordination hub for Claude Code agents and humans.", tags: ["AI", "Open Source"], href: W_COMMS_PUBLIC ? W_COMMS_URL : null, art: <Mascot className="mx-auto h-full p-4" /> },
-  { slot: "project-site", name: "This site", blurb: "Prerendered React, raw WebGL, GSAP. Built with Claude Code.", tags: ["AI"], href: LINKS.site, art: <Mascot className="mx-auto h-full p-4" /> },
+  { slot: "project-wcomms", name: "W-Comms", blurb: "Coordination hub for Claude Code agents and humans.", tags: ["AI", "Open Source"], href: W_COMMS_PUBLIC ? W_COMMS_URL : null, art: <TextArt text="W-Comms" /> },
+  { slot: "project-site", name: "This site", blurb: "Prerendered React, raw WebGL, GSAP. Built with Claude Code.", tags: ["AI"], href: LINKS.site, art: <TextArt text="σ(K,T)" /> },
 ];
 const FILTERS = ["All", "Quant", "AI", "Open Source"] as const;
 
@@ -157,7 +176,7 @@ export function Portfolio() {
   const [f, setF] = useState<(typeof FILTERS)[number]>("All");
   const shown = grid.filter((g) => f === "All" || g.tags.includes(f));
   return (
-    <section id="portfolio" aria-labelledby="portfolio-title" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
+    <div>
       <SectionHead id="portfolio" eyebrow="Portfolio" title="Everything, filterable" />
       <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter projects">
         {FILTERS.map((x) => (
@@ -179,14 +198,14 @@ export function Portfolio() {
             : <div key={g.slot} data-card className="panel p-4">{body}</div>;
         })}
       </div>
-    </section>
+    </div>
   );
 }
 
 export function OpenSource() {
   return (
-    <section id="open-source" aria-labelledby="open-source-title" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
-      <SectionHead id="open-source" eyebrow="Open Source" title="W-Comms" />
+    <div className="mt-6">
+      <p className="eyebrow mb-2">Open Source</p>
       <article data-card className="panel flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between md:p-7">
         <div className="max-w-2xl">
           <p className="text-lg">Shared, near-real-time coordination for every Claude Code agent and person on a repo. Coordination only: nothing in it can trade, merge or deploy.</p>
@@ -194,16 +213,16 @@ export function OpenSource() {
         </div>
         <div className="shrink-0"><WCommsLink /></div>
       </article>
-    </section>
+    </div>
   );
 }
 
 export function Resume() {
   const [open, setOpen] = useState(false);
   return (
-    <section id="resume" aria-labelledby="resume-title" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
+    <div>
       <SectionHead id="resume" eyebrow="Resume" title="Experience" />
-      <div className="mb-8 flex flex-wrap gap-3">
+      <div className="mb-5 flex flex-wrap gap-3">
         <a className="btn btn-primary" href={LINKS.resumePdf} download>Download PDF</a>
         <button type="button" className="btn" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Hide PDF" : "View PDF inline"}</button>
         <a className="btn" href={LINKS.resumePdf} target="_blank" rel="noopener noreferrer">Open in new tab</a>
@@ -211,16 +230,17 @@ export function Resume() {
       {open && (
         <iframe title="Arnav Nair resume PDF" src={LINKS.resumePdf} className="mb-8 h-[80dvh] w-full rounded-lg border border-line bg-paper" loading="lazy" />
       )}
-      <ol className="grid gap-5">
-        {experience.map((r) => (
-          <li key={r.title} data-card className="panel p-5 md:p-6">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-              <h3 className="font-display text-2xl font-bold">{r.org}</h3>
-              <span className="num text-sm text-muted">{r.dates}</span>
-            </div>
-            <p className="mt-1 font-semibold">{r.title}{r.place ? <span className="font-normal text-muted"> · {r.place}</span> : null}</p>
-            {r.note && <p className="mt-2 rounded-md border-l-2 border-sun pl-3 text-sm text-muted">{r.note}</p>}
-            {r.bullets.length > 0 && <ul className="mt-3 grid list-disc gap-2 pl-5 text-[0.95rem]">{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
+      <ol className="grid gap-3">
+        {experience.map((r, i) => (
+          <li key={r.title} data-card className="panel">
+            <details open={i === 1} className="group p-4 md:p-5">
+              <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline justify-between gap-x-4">
+                <span><span className="font-display text-xl font-bold">{r.org}</span><span className="mt-0.5 block text-sm font-semibold">{r.title}{r.place ? <span className="font-normal text-muted"> · {r.place}</span> : null}</span></span>
+                <span className="num text-sm text-muted">{r.dates}</span>
+              </summary>
+              {r.note && <p className="mt-3 rounded-md border-l-2 border-sun pl-3 text-sm text-muted">{r.note}</p>}
+              {r.bullets.length > 0 && <ul className="mt-3 grid list-disc gap-2 pl-5 text-[0.95rem]">{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
+            </details>
           </li>
         ))}
       </ol>
@@ -236,31 +256,29 @@ export function Resume() {
           {skills.map(([k, v]) => <div key={k}><dt className="inline font-semibold">{k}: </dt><dd className="inline text-muted">{v}</dd></div>)}
         </dl>
       </div>
-    </section>
+    </div>
   );
 }
 
 export function Food() {
   return (
-    <section id="food" aria-labelledby="food-title" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-10">
-      <div className="panel p-5">
-        <h2 id="food-title" className="font-display text-2xl font-bold">Food</h2>
-        <p className="text-muted">Coming later.</p>
-      </div>
-    </section>
+    <div className="panel p-5">
+      <h2 className="font-display text-2xl font-bold">Food</h2>
+      <p className="text-muted">Coming later.</p>
+    </div>
   );
 }
 
 export function Contact() {
   return (
-    <footer id="contact" className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-32 pt-16 md:pb-16">
-      <h2 className="font-display text-4xl font-bold md:text-5xl">Let's talk</h2>
+    <div>
+      <h2 id="contact-title" className="font-display text-5xl font-bold">Let's talk</h2>
       <div className="mt-5 flex flex-wrap gap-3">
         <a className="btn btn-primary" href={`mailto:${LINKS.email}`}>{LINKS.email}</a>
         <ExtLink href={LINKS.linkedin}>LinkedIn</ExtLink>
         <ExtLink href={LINKS.github}>GitHub</ExtLink>
       </div>
-      <p className="mt-8 text-sm text-muted">© 2026 Arnav S. Nair. Background: implied σ of obesity threshold crossings from CDC data, strikes 25% to 40%, horizons 1 to 10 years. The wave motion is decorative.</p>
-    </footer>
+      <p className="mt-8 max-w-2xl text-sm text-muted">Background: implied σ of obesity threshold crossings from CDC data, strikes 25% to 40%, horizons 1 to 10 years. The wave motion is decorative. <a className="link" href="#food">Food</a> is coming later. © 2026 Arnav S. Nair.</p>
+    </div>
   );
 }

@@ -13,9 +13,11 @@ export const LINKS = {
 };
 
 export const NAV = [
-  { id: "resume", label: "Resume" },
-  { id: "projects", label: "Projects" },
-  { id: "research", label: "Research" },
-  { id: "portfolio", label: "Portfolio" },
-  { id: "contact", label: "Contact" },
+  { id: "research", label: "Research", teaser: "Backtests that show their work", stat: "Sharpe -1.17, reported anyway" },
+  { id: "projects", label: "Projects", teaser: "Built with LLM agents", stat: "W-Comms is open source" },
+  { id: "portfolio", label: "Portfolio", teaser: "Everything, filterable", stat: "Quant · AI · Open Source" },
+  { id: "resume", label: "Resume", teaser: "Morgan Stanley, KKR", stat: "PDF one click away" },
+  { id: "contact", label: "Contact", teaser: "Let's talk", stat: "Email, LinkedIn, GitHub" },
 ] as const;
+
+export type View = "home" | "food" | (typeof NAV)[number]["id"];
