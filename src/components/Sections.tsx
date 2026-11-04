@@ -30,14 +30,10 @@ const Stat = ({ label, value, sub }: { label: string; value: string; sub?: strin
 
 export function Home() {
   const headshot = slotUrl("about-headshot");
-  const character = slotUrl("hero-character");
   return (
     <div className="mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-5 pb-24 pt-8 md:pb-10 md:pt-20">
       <div className="hero-scrim relative flex flex-col items-center text-center">
-        {character && (character.endsWith(".webm")
-          ? <video className="hero-mascot mb-3 h-auto w-[46vw] max-w-[260px]" src={character} autoPlay muted loop playsInline aria-hidden="true" />
-          : <img className="hero-mascot mb-3 h-auto w-[46vw] max-w-[260px]" src={character} alt="" />)}
-        {headshot && !character && <img src={headshot} alt="Arnav Nair" width="72" height="72" className="mb-3 h-[72px] w-[72px] rounded-full object-cover" />}
+{headshot && <img src={headshot} alt="Arnav Nair" width="72" height="72" className="mb-3 h-[72px] w-[72px] rounded-full object-cover" />}
         <h1 className="hero-title font-display text-6xl font-extrabold leading-none md:text-8xl">Arnav Nair</h1>
         <p className="mt-2 font-display text-2xl font-semibold text-sun md:text-3xl">Quant × AI × Portfolio</p>
         <p className="mt-3 max-w-2xl text-muted md:text-lg">Quantitative Researcher Intern in fixed income at Morgan Stanley, joining full-time in January 2027. I build research systems with LLM agents, and I publish the results when they fail too.</p>
@@ -50,6 +46,9 @@ export function Home() {
           </a>
         ))}
       </div>
+      <p className="mt-4 text-center text-sm text-muted">
+        The surface behind this page is real: implied σ of US obesity thresholds from CDC data. <a className="link" href="#research">See the research</a>
+      </p>
     </div>
   );
 }

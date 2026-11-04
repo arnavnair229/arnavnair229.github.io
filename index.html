@@ -14,11 +14,10 @@
     <script>
       (function () {
         var c = document.documentElement.classList;
-        var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) { c.add("reduce-motion"); return; }
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) { c.add("reduce-motion"); return; }
+        if (location.hash.length > 1) return;
         var seen = false;
         try { seen = sessionStorage.getItem("intro-seen") === "1"; } catch (e) {}
-        c.add("intro-pending");
         c.add(seen ? "intro-short" : "intro-full");
       })();
     </script>

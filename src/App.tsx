@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NAV, type View } from "./config";
-import { slotUrl } from "./components/AssetSlot";
 import { Contact, Food, Home, Portfolio, Projects, Research, Resume } from "./components/Sections";
 import { runIntro } from "./lib/intro";
-import { runBuddies } from "./lib/buddies";
 
 const chip = "flex min-h-[44px] items-center justify-center rounded-lg border border-line bg-panel font-semibold transition-colors duration-150 hover:border-sun";
 const VIEWS: View[] = ["home", "food", ...NAV.map((n) => n.id)];
@@ -13,11 +11,9 @@ const fromHash = (): View => {
 };
 
 export default function App() {
-  const root = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const main = useRef<HTMLElement>(null);
   const [view, setView] = useState<View>("home");
-  const character = slotUrl("hero-character");
 
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -28,9 +24,7 @@ export default function App() {
       main.current?.focus({ preventScroll: true });
     };
     addEventListener("hashchange", onHash);
-    void runIntro(root.current!);
-    addEventListener("intro-end", () => void runBuddies(), { once: true });
-    if (reduced) document.querySelectorAll("video").forEach((v) => v.pause());
+    runIntro();
     const startBg = () => import("./lib/volCanvas").then(({ startVolCanvas }) => {
       if (canvas.current) startVolCanvas(canvas.current, reduced);
     });
@@ -38,10 +32,6 @@ export default function App() {
     else setTimeout(startBg, 600);
     return () => removeEventListener("hashchange", onHash);
   }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("buddies-hidden", view === "food");
-  }, [view]);
 
   const links = (cls: string) => NAV.map((n) => (
     <a key={n.id} data-nav={n.id} href={`#${n.id}`} aria-current={view === n.id ? "page" : undefined} className={cls}>{n.label}</a>
@@ -52,8 +42,13 @@ export default function App() {
   ];
 
   return (
-    <div ref={root}>
+    <>
       <a href="#main" className="sr-only z-[70] rounded bg-sun px-3 py-2 font-semibold text-ink focus:not-sr-only focus:fixed focus:left-3 focus:top-3">Skip to content</a>
+      <div aria-hidden="true" className="tv-screen" />
+      <div id="intro-layer" aria-hidden="true" className="intro-layer" />
+      <button id="skip-intro" type="button" hidden className="btn fixed right-4 top-4 z-[65]">Skip intro</button>
+
+      <div className="site-shell">
       <canvas ref={canvas} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 h-full w-full" />
 
       <nav aria-label="Primary" className="fixed inset-x-0 top-0 z-40 hidden border-b border-line bg-ink/90 md:block">
@@ -66,17 +61,6 @@ export default function App() {
         <div className="grid grid-cols-5 gap-1">{links(`${chip} text-[0.75rem]`)}</div>
       </nav>
 
-      <button id="skip-intro" type="button" hidden className="btn fixed right-4 top-4 z-[65] md:top-16">Skip intro</button>
-      <div aria-hidden="true">
-        {NAV.map((n) => <div key={n.id} className="fly-card rounded-lg border-2 border-ink bg-sun px-4 py-2 font-semibold text-ink shadow-lg">{n.label}</div>)}
-      </div>
-      {character && !character.endsWith(".webm") && (
-        <div aria-hidden="true">
-          <div className="buddy buddy-l"><img src={character} alt="" loading="lazy" /></div>
-          <div className="buddy buddy-r"><img src={character} alt="" loading="lazy" /></div>
-        </div>
-      )}
-
       <main id="main" ref={main} tabIndex={-1} className="outline-none">
         <div hidden={view !== "home"}><Home /></div>
         {panels.map(([id, node]) => (
@@ -86,6 +70,7 @@ export default function App() {
           </section>
         ))}
       </main>
-    </div>
+      </div>
+    </>
   );
 }

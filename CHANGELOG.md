@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 (November 2026)
+
+- New intro: an illustrated Arnav walks on, waves and clicks a remote, the site turns on like a CRT, and he walks off. Repeat visits get the turn-on alone, and reduced-motion visitors go straight to the site.
+- Removed the character slot, border characters, flying cards and GSAP.
+- Added a home-page line linking the background surface to the research.
+
 ## 2.1.0 (November 2026)
 
 - Replaced the long scroll with a one-screen home of tiles and hash-linked panels. Back and forward work, and every panel can be linked to directly.

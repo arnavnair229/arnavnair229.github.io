@@ -36,13 +36,21 @@ button { cursor: pointer; }
 
 .hero-scrim::before { content: ""; position: absolute; inset: 8% 0 4%; z-index: -1; background: radial-gradient(closest-side, rgb(10 10 12 / .94) 55%, transparent); }
 
-/* Intro: the nav waits, unfilled, for the mascot's cards to land. It stays clickable. */
-.intro-pending [data-nav]:not(.landed) { background: transparent; border-color: transparent; color: var(--color-muted); }
-.intro-pending .hero-mascot { transform: scale(.55); transform-origin: 50% 100%; }
-.fly-card { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; visibility: hidden; will-change: transform; }
-
-.idle { animation: breathe 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
-@keyframes breathe { 50% { transform: scale(1.03, .975); } }
+/* Intro: a dark screen covers the content until the remote click. The nav stays above it, one click away. */
+.tv-screen { display: none; position: fixed; inset: 0; z-index: 30; background: var(--color-ink); pointer-events: none; }
+.intro-full .tv-screen, .intro-short .tv-screen { display: block; }
+.tv-on .site-shell { animation: tv-on .9s cubic-bezier(.2,.8,.2,1) both; transform-origin: 50% 50dvh; }
+.tv-on-fast .site-shell { animation: tv-on .5s cubic-bezier(.2,.8,.2,1) both; transform-origin: 50% 50dvh; }
+@keyframes tv-on {
+  0% { opacity: .9; transform: scale(.02, .004); filter: brightness(8); }
+  25% { opacity: 1; transform: scale(1, .004); filter: brightness(8); }
+  60% { opacity: 1; transform: scale(1, 1.02); filter: brightness(2.2) contrast(1.2); }
+  100% { opacity: 1; transform: none; filter: none; }
+}
+.intro-layer { position: fixed; inset: 0; z-index: 50; overflow: hidden; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+/* Sized so the walk reaches the screen edge on wide screens; phones crop the sides and keep him large. */
+.intro-clip { flex: none; width: auto; max-width: none; height: min(86dvh, 57vw); mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent); }
+@media (max-aspect-ratio: 1/1) { .intro-clip { height: 62dvh; mask-image: none; } }
 
 .tile { transition: transform .18s ease-out, border-color .18s ease-out; }
 .tile:hover { transform: translateY(-4px) rotate(-.6deg); border-color: var(--color-sun); }
@@ -50,14 +58,6 @@ button { cursor: pointer; }
 .view-in { animation: view-in .24s ease-out; }
 @keyframes view-in { from { opacity: 0; transform: translateY(12px); } }
 [data-nav][aria-current="page"] { border-color: var(--color-sun); color: var(--color-sun); }
-
-/* Border characters appear only when hero-character exists and the gutter keeps them off the content. */
-.buddy { display: none; position: fixed; bottom: 24px; width: 104px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .3s ease-out; }
-.buddy-l { left: 20px; }
-.buddy-r { right: 20px; transform: scaleX(-1); }
-@media (min-width: 1480px) { .buddy { display: block; } }
-.buddies-on .buddy { opacity: 1; }
-.buddies-hidden .buddy { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
