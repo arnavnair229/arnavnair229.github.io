@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-const files = import.meta.glob("../assets/slots/*.{webp,avif,png,jpg,jpeg,svg}", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
+const files = import.meta.glob("../assets/slots/*.{webp,avif,png,jpg,jpeg,svg,webm}", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
 
 export function slotUrl(name: string): string | null {
   const hit = Object.keys(files).find((p) => p.split("/").pop()?.replace(/\.[^.]+$/, "") === name);

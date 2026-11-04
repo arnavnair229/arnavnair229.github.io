@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0 (November 2026)
+
+- Replaced the long scroll with a one-screen home of tiles and hash-linked panels. Back and forward work, and every panel can be linked to directly.
+- Research now has sub-tabs, and resume roles expand and collapse.
+- Removed the SVG mascot and Lenis. Added a `hero-character` asset slot that drives the intro and border characters.
+
 ## 2.0.0 (November 2026)
 
 - Rebuilt as a prerendered Vite + React + TypeScript + Tailwind site, deployed to GitHub Pages by GitHub Actions.
