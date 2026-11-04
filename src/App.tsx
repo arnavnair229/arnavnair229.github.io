@@ -1,91 +1,63 @@
 import { useEffect, useRef, useState } from "react";
-import { NAV, type View } from "./config";
-import { slotUrl } from "./components/AssetSlot";
-import { Contact, Food, Home, Portfolio, Projects, Research, Resume } from "./components/Sections";
+import { PROJECTS, TABS, type ProjectId, type Tab } from "./config";
+import { Contact, Food, Resume, Work } from "./components/Sections";
 import { runIntro } from "./lib/intro";
-import { runBuddies } from "./lib/buddies";
 
-const chip = "flex min-h-[44px] items-center justify-center rounded-lg border border-line bg-panel font-semibold transition-colors duration-150 hover:border-sun";
-const VIEWS: View[] = ["home", "food", ...NAV.map((n) => n.id)];
-const fromHash = (): View => {
-  const h = location.hash.slice(1) as View;
-  return VIEWS.includes(h) ? h : "home";
-};
+type Route = { tab: Tab; project: ProjectId };
+const DEFAULT_PROJECT: ProjectId = "kalman";
+
+function parse(hash: string, previous: ProjectId): Route {
+  const h = hash.slice(1);
+  if (PROJECTS.some((p) => p.id === h)) return { tab: "work", project: h as ProjectId };
+  if (TABS.some((t) => t.id === h)) return { tab: h as Tab, project: previous };
+  return { tab: "work", project: previous };
+}
 
 export default function App() {
-  const root = useRef<HTMLDivElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
   const main = useRef<HTMLElement>(null);
-  const [view, setView] = useState<View>("home");
-  const character = slotUrl("hero-character");
+  const [route, setRoute] = useState<Route>({ tab: "work", project: DEFAULT_PROJECT });
 
   useEffect(() => {
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setView(fromHash());
+    setRoute(parse(location.hash, DEFAULT_PROJECT));
     const onHash = () => {
-      setView(fromHash());
-      scrollTo(0, 0);
+      const isProject = PROJECTS.some((p) => `#${p.id}` === location.hash);
+      setRoute((r) => parse(location.hash, r.project));
       main.current?.focus({ preventScroll: true });
+      // On one-column layouts, the chosen project sits below the index, so go to it.
+      if (isProject && innerWidth < 768) requestAnimationFrame(() => document.getElementById("project-detail")?.scrollIntoView());
+      else if (!isProject) scrollTo(0, 0);
     };
     addEventListener("hashchange", onHash);
-    void runIntro(root.current!);
-    addEventListener("intro-end", () => void runBuddies(), { once: true });
-    if (reduced) document.querySelectorAll("video").forEach((v) => v.pause());
-    const startBg = () => import("./lib/volCanvas").then(({ startVolCanvas }) => {
-      if (canvas.current) startVolCanvas(canvas.current, reduced);
-    });
-    if ("requestIdleCallback" in window) requestIdleCallback(startBg, { timeout: 1500 });
-    else setTimeout(startBg, 600);
+    runIntro();
     return () => removeEventListener("hashchange", onHash);
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("buddies-hidden", view === "food");
-  }, [view]);
-
-  const links = (cls: string) => NAV.map((n) => (
-    <a key={n.id} data-nav={n.id} href={`#${n.id}`} aria-current={view === n.id ? "page" : undefined} className={cls}>{n.label}</a>
-  ));
-  const panels: [Exclude<View, "home">, React.ReactNode][] = [
-    ["research", <Research />], ["projects", <Projects />], ["portfolio", <Portfolio />],
-    ["resume", <Resume />], ["contact", <Contact />], ["food", <Food />],
+  const views: [Tab, React.ReactNode][] = [
+    ["work", <Work project={route.project} />], ["food", <Food />], ["resume", <Resume />], ["contact", <Contact />],
   ];
 
   return (
-    <div ref={root}>
-      <a href="#main" className="sr-only z-[70] rounded bg-sun px-3 py-2 font-semibold text-ink focus:not-sr-only focus:fixed focus:left-3 focus:top-3">Skip to content</a>
-      <canvas ref={canvas} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 h-full w-full" />
+    <>
+      <a href="#main" className="sr-only z-[70] bg-ink px-3 py-2 text-paper focus:not-sr-only focus:fixed focus:left-3 focus:top-3">Skip to content</a>
+      <div aria-hidden="true" className="tv-screen" />
+      <div id="intro-layer" aria-hidden="true" className="intro-layer" />
+      <button id="skip-intro" type="button" hidden className="fixed bottom-5 right-5 z-[65] min-h-[44px] bg-paper px-4 text-ink underline">Skip intro</button>
 
-      <nav aria-label="Primary" className="fixed inset-x-0 top-0 z-40 hidden border-b border-line bg-ink/90 md:block">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2">
-          <a href="#home" className="font-display text-lg font-bold">Arnav Nair</a>
-          <div className="flex gap-2">{links(`${chip} px-4 text-sm`)}</div>
-        </div>
-      </nav>
-      <nav aria-label="Primary, mobile" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-ink/95 p-1.5 pb-[max(.375rem,env(safe-area-inset-bottom))] md:hidden">
-        <div className="grid grid-cols-5 gap-1">{links(`${chip} text-[0.75rem]`)}</div>
-      </nav>
-
-      <button id="skip-intro" type="button" hidden className="btn fixed right-4 top-4 z-[65] md:top-16">Skip intro</button>
-      <div aria-hidden="true">
-        {NAV.map((n) => <div key={n.id} className="fly-card rounded-lg border-2 border-ink bg-sun px-4 py-2 font-semibold text-ink shadow-lg">{n.label}</div>)}
+      <div className="site-shell">
+        <header className="site-header sticky top-0 z-40 border-b border-rule bg-paper">
+          <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-x-6 px-5">
+            <a href="#work" className="inline-flex min-h-[44px] items-center font-medium">Arnav Nair</a>
+            <nav aria-label="Primary" className="flex gap-5">
+              {TABS.map((t) => <a key={t.id} className="tab" href={`#${t.id}`} aria-current={route.tab === t.id ? "page" : undefined}>{t.label}</a>)}
+            </nav>
+          </div>
+        </header>
+        <main id="main" ref={main} tabIndex={-1} className="outline-none">
+          {views.map(([id, node]) => (
+            <section key={id} hidden={route.tab !== id} aria-label={id} className="mx-auto max-w-[1080px] px-5 pb-16 pt-8 md:pt-12">{node}</section>
+          ))}
+        </main>
       </div>
-      {character && !character.endsWith(".webm") && (
-        <div aria-hidden="true">
-          <div className="buddy buddy-l"><img src={character} alt="" loading="lazy" /></div>
-          <div className="buddy buddy-r"><img src={character} alt="" loading="lazy" /></div>
-        </div>
-      )}
-
-      <main id="main" ref={main} tabIndex={-1} className="outline-none">
-        <div hidden={view !== "home"}><Home /></div>
-        {panels.map(([id, node]) => (
-          <section key={id} hidden={view !== id} aria-label={id}
-            className={`mx-auto max-w-6xl px-5 pb-28 pt-6 md:pb-12 md:pt-24 ${view === id ? "view-in" : ""}`}>
-            {node}
-          </section>
-        ))}
-      </main>
-    </div>
+    </>
   );
 }

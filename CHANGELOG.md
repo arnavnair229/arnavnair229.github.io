@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.0.0 (November 2026)
+
+- Redesigned as a plain editorial page: paper background, one serif, one accent color, thin rules instead of cards.
+- Four tabs: Work, Food, Resume, Contact. Quant and AI projects share one index on the left of Work.
+- The surface moved from a full-page background into its own captioned figure.
+- Removed the portfolio grid and home tiles, which duplicated the project index.
+
+## 2.2.0 (November 2026)
+
+- New intro: an illustrated Arnav walks on, waves and clicks a remote, the site turns on like a CRT, and he walks off. Repeat visits get the turn-on alone, and reduced-motion visitors go straight to the site.
+- Removed the character slot, border characters, flying cards and GSAP.
+- Added a home-page line linking the background surface to the research.
+
 ## 2.1.0 (November 2026)
 
 - Replaced the long scroll with a one-screen home of tiles and hash-linked panels. Back and forward work, and every panel can be linked to directly.

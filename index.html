@@ -3,22 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Arnav Nair | Quant × AI</title>
+    <title>Arnav Nair</title>
     <meta name="description" content="Arnav Nair builds quantitative research systems with LLM agents. Fixed income at Morgan Stanley, prediction-market ML, open-source agent tooling, and honest backtests." />
-    <meta property="og:title" content="Arnav Nair | Quant × AI" />
+    <meta property="og:title" content="Arnav Nair" />
     <meta property="og:description" content="Quant research, LLM-built systems, and honest backtests." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://arnavnair229.github.io/" />
-    <meta name="theme-color" content="#0a0a0c" />
+    <meta name="theme-color" content="#f6f3ec" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script>
       (function () {
         var c = document.documentElement.classList;
-        var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) { c.add("reduce-motion"); return; }
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) { c.add("reduce-motion"); return; }
+        if (location.hash.length > 1) return;
         var seen = false;
         try { seen = sessionStorage.getItem("intro-seen") === "1"; } catch (e) {}
-        c.add("intro-pending");
         c.add(seen ? "intro-short" : "intro-full");
       })();
     </script>
