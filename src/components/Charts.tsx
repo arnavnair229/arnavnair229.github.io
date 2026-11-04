@@ -32,7 +32,7 @@ export function EquityChart() {
 
   return (
     <figure>
-      <figcaption className="mb-2 text-sm font-semibold">Growth of $1, walk-forward, after 5 bps per side costs</figcaption>
+      <figcaption className="label mb-2">Growth of $1, walk-forward, after 5 bps per side costs</figcaption>
       <div className="relative">
         <svg
           ref={ref} viewBox={`0 0 ${W} ${H}`} className="w-full touch-pan-y" tabIndex={0} role="img"
@@ -45,27 +45,27 @@ export function EquityChart() {
         >
           {ticks.map((t) => (
             <g key={t}>
-              <line x1={L} x2={W - R} y1={y(t)} y2={y(t)} stroke={t === 1 ? "#6d6d76" : "#2c2c33"} strokeWidth="1" />
-              <text x={L - 8} y={y(t) + 4} textAnchor="end" fill="#b0aea6" className="num chart-text">{t.toFixed(2)}</text>
+              <line x1={L} x2={W - R} y1={y(t)} y2={y(t)} stroke={t === 1 ? "#8a8578" : "#d3cdbe"} strokeWidth="1" />
+              <text x={L - 8} y={y(t) + 4} textAnchor="end" fill="#5c584e" className="chart-text">{t.toFixed(2)}</text>
             </g>
           ))}
-          {years.map((p) => <text key={p.yr} x={x(p.n)} y={H - 8} fill="#b0aea6" className="num chart-text">{p.yr}</text>)}
-          <path d={path} fill="none" stroke="#ff5a4f" strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          {years.map((p) => <text key={p.yr} x={x(p.n)} y={H - 8} fill="#5c584e" className="chart-text">{p.yr}</text>)}
+          <path d={path} fill="none" stroke="#b32a18" strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
           {cur && i !== null && (
             <g>
-              <line x1={x(i)} x2={x(i)} y1={T} y2={H - B} stroke="#f3f1ea" strokeWidth="1" opacity=".6" />
-              <circle cx={x(i)} cy={y(cur.v)} r="4.500" fill="#ff5a4f" stroke="#141418" strokeWidth="2" />
+              <line x1={x(i)} x2={x(i)} y1={T} y2={H - B} stroke="#16150f" strokeWidth="1" opacity=".5" />
+              <circle cx={x(i)} cy={y(cur.v)} r="4.500" fill="#b32a18" stroke="#f6f3ec" strokeWidth="2" />
             </g>
           )}
         </svg>
-        <div className="num absolute right-2 top-2 rounded-md border border-line bg-ink px-2 py-1 text-xs" aria-live="polite">
+        <div className="num absolute right-0 top-0 bg-paper pl-2" aria-live="polite">
           {cur ? `${cur.d}: ${cur.v.toFixed(3)}` : `End: ${last.v.toFixed(3)}`}
         </div>
       </div>
-      <details className="mt-2 text-sm text-muted">
-        <summary className="cursor-pointer py-2">Table view</summary>
+      <details className="label mt-1">
+        <summary className="flex min-h-[44px] cursor-pointer items-center gap-2"><span className="marker" aria-hidden="true" /> Data as a table</summary>
         <div className="max-h-48 overflow-y-auto">
-          <table className="num w-full text-left text-xs">
+          <table className="num w-full text-left">
             <thead><tr><th className="py-1">Date</th><th>Equity</th></tr></thead>
             <tbody>{pts.filter((_, n) => n % 20 === 0 || n === pts.length - 1).map((p) => <tr key={p.d}><td className="py-0.5">{p.d}</td><td>{p.v.toFixed(3)}</td></tr>)}</tbody>
           </table>
@@ -81,12 +81,12 @@ const MAX_SIGMA = Math.max(...grid.flat().filter((v): v is number => v !== null)
 export function SurfaceTable() {
   return (
     <figure>
-      <figcaption className="mb-2 text-sm font-semibold">Implied σ (logit scale) by threshold and horizon</figcaption>
+      <figcaption className="label mb-2">Implied σ (logit scale) by threshold and horizon</figcaption>
       <div className="overflow-x-auto">
-        <table className="num w-full min-w-[440px] border-separate border-spacing-0.5 text-center text-xs">
+        <table className="num w-full min-w-[440px] border-collapse text-center text-[0.8125rem]">
           <thead>
             <tr>
-              <th scope="col" className="p-1 text-left font-normal text-muted">T \ K</th>
+              <th scope="col" className="p-1 text-left font-normal text-muted whitespace-nowrap">T \ K</th>
               {strikes.map((k) => <th key={k} scope="col" className="p-1 font-normal text-muted">{k}%</th>)}
             </tr>
           </thead>
@@ -95,8 +95,8 @@ export function SurfaceTable() {
               <tr key={maturities[r]}>
                 <th scope="row" className="p-1 text-left font-normal text-muted">{maturities[r]}y</th>
                 {row.map((v, c) => (
-                  <td key={c} className="rounded p-1.5" title={v === null ? "No usable probability" : `K=${strikes[c]}%, T=${maturities[r]}y`}
-                    style={{ background: v === null ? "transparent" : `color-mix(in oklab, #ff5a4f ${Math.round((v / MAX_SIGMA) * 58)}%, #1b1b20)` }}>
+                  <td key={c} className="p-1.5" title={v === null ? "No usable probability" : `K=${strikes[c]}%, T=${maturities[r]}y`}
+                    style={{ background: v === null ? "transparent" : `color-mix(in oklab, #b32a18 ${Math.round((v / MAX_SIGMA) * 34)}%, #f6f3ec)` }}>
                     {v === null ? <span className="text-muted">n/a</span> : v.toFixed(3)}
                   </td>
                 ))}
@@ -105,25 +105,9 @@ export function SurfaceTable() {
           </tbody>
         </table>
       </div>
-      <p className="mt-2 text-sm text-muted">
-        Brighter means higher σ. n/a means the crossing probability was outside 1% to 99%, so the cell is left empty. Implied forward: {forwards["1"]}% at 1y, {forwards["10"]}% at 10y.
+      <p className="label mt-2 prose-w">
+        Darker means higher σ. n/a means the crossing probability was outside 1% to 99%, so the cell is left empty. Implied forward: {forwards["1"]}% at 1y, {forwards["10"]}% at 10y.
       </p>
     </figure>
-  );
-}
-
-export function Sparkline() {
-  const pts = kalman.equity;
-  const vals = pts.map((p) => p.v);
-  const lo = Math.min(...vals), hi = Math.max(...vals);
-  const d = pts.map((p, n) => `${n ? "L" : "M"}${((n / (pts.length - 1)) * 320).toFixed(1)} ${(170 - ((p.v - lo) / (hi - lo)) * 140).toFixed(1)}`).join("");
-  return <svg viewBox="0 0 320 180" className="h-full w-full" aria-hidden="true"><path d={d} fill="none" stroke="#ff5a4f" strokeWidth="2.500" /></svg>;
-}
-
-export function MiniSurface() {
-  return (
-    <div className="grid h-full w-full gap-0.5 p-2" style={{ gridTemplateColumns: `repeat(${strikes.length}, 1fr)` }} aria-hidden="true">
-      {grid.flat().map((v, i) => <div key={i} className="rounded-sm" style={{ background: v === null ? "#141418" : `color-mix(in oklab, #ff5a4f ${Math.round((v / MAX_SIGMA) * 90)}%, #1b1b20)` }} />)}
-    </div>
   );
 }

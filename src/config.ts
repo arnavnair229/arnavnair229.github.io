@@ -1,4 +1,4 @@
-/** Flip to false to show the W-Comms card as "Going public soon", with no link. */
+/** Flip to false to show W-Comms as "Going public soon", with no link. */
 export const W_COMMS_PUBLIC = true;
 export const W_COMMS_URL = "https://github.com/arnavnair229/wcomms";
 
@@ -12,12 +12,18 @@ export const LINKS = {
   site: "https://github.com/arnavnair229/arnavnair229.github.io",
 };
 
-export const NAV = [
-  { id: "research", label: "Research", teaser: "Backtests that show their work", stat: "Sharpe -1.17, reported anyway" },
-  { id: "projects", label: "Projects", teaser: "Built with LLM agents", stat: "W-Comms is open source" },
-  { id: "portfolio", label: "Portfolio", teaser: "Everything, filterable", stat: "Quant · AI · Open Source" },
-  { id: "resume", label: "Resume", teaser: "Morgan Stanley, KKR", stat: "PDF one click away" },
-  { id: "contact", label: "Contact", teaser: "Let's talk", stat: "Email, LinkedIn, GitHub" },
+export const TABS = [
+  { id: "work", label: "Work" },
+  { id: "food", label: "Food" },
+  { id: "resume", label: "Resume" },
+  { id: "contact", label: "Contact" },
 ] as const;
+export type Tab = (typeof TABS)[number]["id"];
 
-export type View = "home" | "food" | (typeof NAV)[number]["id"];
+export const PROJECTS = [
+  { id: "kalman", group: "Quant", name: "Kalman pairs" },
+  { id: "surface", group: "Quant", name: "Obesity surface" },
+  { id: "wcomms", group: "AI", name: "W-Comms" },
+  { id: "site", group: "AI", name: "This site" },
+] as const;
+export type ProjectId = (typeof PROJECTS)[number]["id"];

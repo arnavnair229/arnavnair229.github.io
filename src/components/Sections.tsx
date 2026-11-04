@@ -1,283 +1,234 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import headshot from "../assets/about-headshot.jpg";
 import kalman from "../data/kalman.json";
-import { LINKS, NAV, W_COMMS_PUBLIC, W_COMMS_URL } from "../config";
+import { LINKS, PROJECTS, W_COMMS_PUBLIC, W_COMMS_URL, type ProjectId } from "../config";
 import { education, experience, skills } from "../data/resume";
-import { AssetSlot, slotUrl } from "./AssetSlot";
-import { EquityChart, MiniSurface, Sparkline, SurfaceTable } from "./Charts";
+import { EquityChart, SurfaceTable } from "./Charts";
 
 const pct = (v: number) => `${v > 0 ? "+" : ""}${(v * 100).toFixed(1)}%`;
-const ExtLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a className="btn" href={href} target="_blank" rel="noopener noreferrer">{children}</a>
+const Ext = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <a className="link" href={href} target="_blank" rel="noopener noreferrer">{children}</a>
 );
 
-function SectionHead({ id, eyebrow, title, intro }: { id: string; eyebrow: string; title: string; intro?: string }) {
+function SurfaceFigure() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const start = () => import("../lib/volCanvas").then(({ startVolCanvas }) => {
+      if (ref.current) startVolCanvas(ref.current, reduced);
+    });
+    if ("requestIdleCallback" in window) requestIdleCallback(start, { timeout: 1500 });
+    else setTimeout(start, 600);
+  }, []);
   return (
-    <header className="mb-5 max-w-3xl">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2 id={`${id}-title`} className="mt-2 font-display text-3xl font-bold leading-tight md:text-5xl">{title}</h2>
-      {intro && <p className="mt-2 text-muted md:text-lg">{intro}</p>}
-    </header>
+    <figure>
+      <canvas ref={ref} aria-hidden="true" className="h-[190px] w-full md:h-[210px]" />
+      <figcaption className="label mt-1">
+        Implied σ of US obesity thresholds, from CDC data. <a className="link" href="#surface">The model</a>
+      </figcaption>
+    </figure>
   );
 }
 
-const Stat = ({ label, value, sub }: { label: string; value: string; sub?: string }) => (
-  <div className="rounded-lg border border-line bg-ink/60 p-3">
-    <dt className="text-xs text-muted">{label}</dt>
-    <dd className="num mt-1 text-xl font-semibold">{value}</dd>
-    {sub && <dd className="num text-xs text-muted">{sub}</dd>}
-  </div>
+const Facts = ({ rows }: { rows: [string, string, string?][] }) => (
+  <dl className="my-6 grid grid-cols-2 border-y border-rule md:grid-cols-4">
+    {rows.map(([k, v, sub]) => (
+      <div key={k} className="py-3 pr-4">
+        <dt className="label">{k}</dt>
+        <dd className="text-2xl">{v}</dd>
+        {sub && <dd className="label">{sub}</dd>}
+      </div>
+    ))}
+  </dl>
 );
 
-export function Home() {
-  const headshot = slotUrl("about-headshot");
-  return (
-    <div className="mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-5 pb-24 pt-8 md:pb-10 md:pt-20">
-      <div className="hero-scrim relative flex flex-col items-center text-center">
-{headshot && <img src={headshot} alt="Arnav Nair" width="72" height="72" className="mb-3 h-[72px] w-[72px] rounded-full object-cover" />}
-        <h1 className="hero-title font-display text-6xl font-extrabold leading-none md:text-8xl">Arnav Nair</h1>
-        <p className="mt-2 font-display text-2xl font-semibold text-sun md:text-3xl">Quant × AI × Portfolio</p>
-        <p className="mt-3 max-w-2xl text-muted md:text-lg">Quantitative Researcher Intern in fixed income at Morgan Stanley, joining full-time in January 2027. I build research systems with LLM agents, and I publish the results when they fail too.</p>
-      </div>
-      <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-5">
-        {NAV.map((n, i) => (
-          <a key={n.id} href={`#${n.id}`} data-card className={`tile panel group flex min-h-[116px] flex-col justify-between p-4 ${i === 0 ? "col-span-2 md:col-span-1" : ""}`}>
-            <span className="font-display text-2xl font-bold group-hover:text-sun">{n.label}</span>
-            <span className="mt-2 text-sm">{n.teaser}<span className="num mt-1 block text-xs text-muted">{n.stat}</span></span>
-          </a>
-        ))}
-      </div>
-      <p className="mt-4 text-center text-sm text-muted">
-        The surface behind this page is real: implied σ of US obesity thresholds from CDC data. <a className="link" href="#research">See the research</a>
-      </p>
-    </div>
-  );
-}
-
-function Tabs<T extends string>({ label, value, onChange, options }: { label: string; value: T; onChange: (v: T) => void; options: [T, string][] }) {
-  return (
-    <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={label}>
-      {options.map(([v, text]) => <button key={v} type="button" aria-pressed={value === v} onClick={() => onChange(v)} className={`btn ${value === v ? "btn-primary" : ""}`}>{text}</button>)}
-    </div>
-  );
-}
-
-export function Research() {
+function Kalman() {
   const m = kalman.metrics;
-  const [tab, setTab] = useState<"kalman" | "surface">("kalman");
   return (
-    <div>
-      <SectionHead id="research" eyebrow="Quant" title="Research that shows its work"
-        intro="Every number is generated by the linked repo. Where a strategy has no edge, the page says so." />
-      <Tabs label="Research projects" value={tab} onChange={setTab} options={[["kalman", "Kalman pairs"], ["surface", "Obesity surface"]]} />
-      <div className="grid grid-cols-[minmax(0,1fr)]">
-        <article hidden={tab !== "kalman"} data-card className="panel min-w-0 p-5 md:p-7">
-          <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h3 className="font-display text-3xl font-bold">Kalman-filter pairs trading</h3>
-            <span className="num rounded-md border border-coral px-2 py-1 text-xs">Result: no out-of-sample edge</span>
-          </div>
-          <p className="mt-3 max-w-3xl text-muted">
-            A dynamic hedge ratio on EWH/EWZ. The earlier backtest looked fine at a 60% win rate. With look-ahead removed, next-day fills, costs and walk-forward parameter selection, the pair shows no tradable edge.
-          </p>
-          <dl className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Stat label="Sharpe, walk-forward" value={m.sharpe.toFixed(2)} sub={`95% CI ${m.sharpe_95ci[0].toFixed(2)} to ${m.sharpe_95ci[1].toFixed(2)}`} />
-            <Stat label="CAGR" value={pct(m.cagr)} sub={`0 bps: ${pct(kalman.metrics_0bps.cagr)}`} />
-            <Stat label="Max drawdown" value={pct(m.max_drawdown)} />
-            <Stat label="Round trips" value={String(m.round_trips)} sub={`${Math.round(m.win_rate * 100)}% wins`} />
-          </dl>
-          <div className="mt-6"><EquityChart /></div>
-          <p className="mt-3 text-sm text-muted">
-            5 bps per side, 0.5% a year short borrow, fills at the next close. Each quarter's parameters come from the prior two years only. Engle-Granger p-value on the selection window: {kalman.eg_p_formation.toFixed(2)}, so the pair is not cointegrated. Few trades means this is weak evidence either way.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-3"><ExtLink href={LINKS.kalman}>Code and full results</ExtLink></div>
-        </article>
+    <>
+      <h2 className="text-3xl leading-tight">Kalman-filter pairs trading</h2>
+      <p className="prose-w mt-3">
+        A dynamic hedge ratio on EWH/EWZ. The first backtest showed a 60% win rate. After I removed look-ahead and added next-day fills, costs and walk-forward parameter selection, the pair has no tradable edge.
+      </p>
+      <Facts rows={[
+        ["Sharpe", m.sharpe.toFixed(2), `95% CI ${m.sharpe_95ci[0].toFixed(2)} to ${m.sharpe_95ci[1].toFixed(2)}`],
+        ["CAGR", pct(m.cagr), `${pct(kalman.metrics_0bps.cagr)} with no costs`],
+        ["Max drawdown", pct(m.max_drawdown)],
+        ["Round trips", String(m.round_trips), `${Math.round(m.win_rate * 100)}% wins`],
+      ]} />
+      <EquityChart />
+      <p className="prose-w mt-4 text-base text-muted">
+        5 bps per side, 0.5% a year short borrow, fills at the next close. Each quarter's parameters come from the prior two years only. Engle-Granger p-value on the selection window is {kalman.eg_p_formation.toFixed(2)}, so the pair is not cointegrated. With this few trades, the evidence is weak either way.
+      </p>
+      <p className="mt-4"><Ext href={LINKS.kalman}>Code and full results</Ext></p>
+    </>
+  );
+}
 
-        <article hidden={tab !== "surface"} data-card className="panel min-w-0 p-5 md:p-7">
-          <h3 className="font-display text-3xl font-bold">US obesity threshold surface</h3>
-          <p className="mt-3 max-w-3xl text-muted">
-            Option-style machinery on CDC state data: how likely prevalence is to cross a level over a horizon, inverted into an implied σ surface. It is the wireframe behind this page. These are historical-frequency probabilities, not risk-neutral prices, and nothing here trades.
-          </p>
-          <div className="mt-6"><SurfaceTable /></div>
-          <dl className="mt-5 grid gap-3 md:grid-cols-2">
-            <div className="rounded-lg border border-line bg-ink/60 p-4">
-              <dt className="font-semibold">What broke</dt>
-              <dd className="mt-1 text-sm text-muted">Taking drift from a separate model put a false spike in the surface (σ 0.30 next to 0.03). Using one crossing curve for both removed it.</dd>
-            </div>
-            <div className="rounded-lg border border-line bg-ink/60 p-4">
-              <dt className="font-semibold">What did not survive</dt>
-              <dd className="mt-1 text-sm text-muted">A food-supply index correlated with obesity at r=0.96, but calendar year alone reaches 0.98. Detrended, it falls to -0.19 (p=0.52). It stays a hypothesis.</dd>
-            </div>
-          </dl>
-          <div className="mt-4 flex flex-wrap gap-3"><ExtLink href={LINKS.surface}>Code and data</ExtLink></div>
-        </article>
+function Surface() {
+  return (
+    <>
+      <h2 className="text-3xl leading-tight">US obesity threshold surface</h2>
+      <p className="prose-w mt-3">
+        Option-pricing tools applied to CDC state data: how likely prevalence is to cross a level over a horizon, inverted into an implied σ surface. These are historical frequencies, not risk-neutral prices, and nothing here trades.
+      </p>
+      <div className="mt-6"><SurfaceTable /></div>
+      <div className="prose-w mt-6 grid gap-3">
+        <p><strong className="font-semibold">What broke.</strong> Taking drift from a separate model put a false spike in the surface, σ of 0.30 next to 0.03. Using one crossing curve for both removed it.</p>
+        <p><strong className="font-semibold">What didn't hold up.</strong> A food-supply index correlated with obesity at 0.96, but calendar year alone reaches 0.98. Detrended, it falls to -0.19 (p=0.52), so it stays a hypothesis.</p>
       </div>
+      <p className="mt-4"><Ext href={LINKS.surface}>Code and data</Ext></p>
+    </>
+  );
+}
+
+function Three({ built, broke, learned }: { built: string; broke: string; learned: string }) {
+  return (
+    <div className="prose-w mt-3 grid gap-3">
+      <p><strong className="font-semibold">What I built.</strong> {built}</p>
+      <p><strong className="font-semibold">What broke.</strong> {broke}</p>
+      <p><strong className="font-semibold">What I learned.</strong> {learned}</p>
     </div>
   );
 }
 
-const WCommsLink = () => W_COMMS_PUBLIC
-  ? <ExtLink href={W_COMMS_URL}>View on GitHub</ExtLink>
-  : <span className="btn cursor-default opacity-80">Going public soon</span>;
-
-const aiProjects = [
-  {
-    name: "W-Comms",
-    what: "A shared real-time hub for Claude Code agents and people on one repo: Cloudflare Worker and Durable Object, MCP tools, hooks, a voxel-town dashboard, and a human-gated learning loop.",
-    broke: "Sign-in failures gave no usable error until I added exact OAuth diagnostics. The town feature took three rounds of review fixes before merging.",
-    learned: "A hook's output is the only way into a running agent. Anything agents can share becomes instructions to the others, so humans approve it first.",
-    demo: <span className="btn cursor-default opacity-80">Live demo coming soon</span>,
-    repo: <WCommsLink />,
-  },
-  {
-    name: "This site",
-    what: "A static, prerendered React site with a hand-written WebGL surface and an original animated mascot, built with Claude Code.",
-    broke: "An audit found the old site's Kalman chart was hand-typed, and its surface filled empty cells with made-up values.",
-    learned: "Charts should read model output directly, with the source repo linked, so a claim can be checked from the page.",
-    demo: <a className="btn" href="#top">You're on it</a>,
-    repo: <ExtLink href={LINKS.site}>View on GitHub</ExtLink>,
-  },
-];
-
-export function Projects() {
+function WComms() {
   return (
-    <div>
-      <SectionHead id="projects" eyebrow="AI" title="Built with LLMs, on purpose"
-        intro="I build with LLM agents and I say so. My job is the design, the verification and the decision about what to believe." />
-      <div className="grid gap-6 md:grid-cols-2">
-        {aiProjects.map((p) => (
-          <article key={p.name} data-card className="panel flex flex-col p-5 md:p-7">
-            <h3 className="font-display text-3xl font-bold">{p.name}</h3>
-            <dl className="mt-4 grid flex-1 gap-3 text-sm">
-              <div><dt className="font-semibold">What I built</dt><dd className="text-muted">{p.what}</dd></div>
-              <div><dt className="font-semibold">What broke</dt><dd className="text-muted">{p.broke}</dd></div>
-              <div><dt className="font-semibold">What I learned</dt><dd className="text-muted">{p.learned}</dd></div>
-            </dl>
-            <div className="mt-5 flex flex-wrap gap-3">{p.demo}{p.repo}</div>
-          </article>
-        ))}
-      </div>
-      <OpenSource />
-    </div>
+    <>
+      <h2 className="text-3xl leading-tight">W-Comms</h2>
+      <p className="label mt-1">{W_COMMS_PUBLIC ? "Open source · MIT · TypeScript · Cloudflare Workers" : "Going public soon"}</p>
+      <Three
+        built="A shared, near-real-time hub for Claude Code agents and the people working on one repo: a Cloudflare Worker and Durable Object, MCP tools, hooks, a voxel-town dashboard and a learning loop that humans approve. It only coordinates. Nothing in it can trade, merge or deploy."
+        broke="Sign-in failures gave no usable error until I added exact OAuth diagnostics. The town feature took three rounds of review fixes before it merged."
+        learned="A hook's output is the only way into a running agent. Anything agents can share becomes instructions to the others, so humans approve it first."
+      />
+      <p className="mt-4">{W_COMMS_PUBLIC ? <Ext href={W_COMMS_URL}>Repository</Ext> : "Link coming when it goes public."} <span className="text-muted">Live demo coming.</span></p>
+    </>
   );
 }
 
-const TextArt = ({ text }: { text: string }) => <div className="flex h-full items-center justify-center font-display text-3xl font-bold text-sun" aria-hidden="true">{text}</div>;
-
-type Tag = "Quant" | "AI" | "Open Source";
-const grid: { slot: string; name: string; blurb: string; tags: Tag[]; href: string | null; art: React.ReactNode }[] = [
-  { slot: "project-kalman", name: "Kalman pairs trading", blurb: "Dynamic hedge ratio, walk-forward test, honest negative result.", tags: ["Quant"], href: LINKS.kalman, art: <Sparkline /> },
-  { slot: "project-surface", name: "Obesity threshold surface", blurb: "Implied σ surface from CDC data, with stress tests on the claims.", tags: ["Quant"], href: LINKS.surface, art: <MiniSurface /> },
-  { slot: "project-wcomms", name: "W-Comms", blurb: "Coordination hub for Claude Code agents and humans.", tags: ["AI", "Open Source"], href: W_COMMS_PUBLIC ? W_COMMS_URL : null, art: <TextArt text="W-Comms" /> },
-  { slot: "project-site", name: "This site", blurb: "Prerendered React, raw WebGL, GSAP. Built with Claude Code.", tags: ["AI"], href: LINKS.site, art: <TextArt text="σ(K,T)" /> },
-];
-const FILTERS = ["All", "Quant", "AI", "Open Source"] as const;
-
-export function Portfolio() {
-  const [f, setF] = useState<(typeof FILTERS)[number]>("All");
-  const shown = grid.filter((g) => f === "All" || g.tags.includes(f));
+function ThisSite() {
   return (
-    <div>
-      <SectionHead id="portfolio" eyebrow="Portfolio" title="Everything, filterable" />
-      <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter projects">
-        {FILTERS.map((x) => (
-          <button key={x} type="button" aria-pressed={f === x} onClick={() => setF(x)} className={`btn ${f === x ? "btn-primary" : ""}`}>{x}</button>
-        ))}
-      </div>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {shown.map((g) => {
-          const body = (
-            <>
-              <AssetSlot slot={g.slot} alt={`${g.name} thumbnail`} ratio="16 / 9">{g.art}</AssetSlot>
-              <h3 className="mt-3 font-display text-xl font-bold">{g.name}</h3>
-              <p className="mt-1 text-sm text-muted">{g.blurb}</p>
-              <p className="num mt-2 text-xs text-sun">{g.tags.join(" · ")}{g.href ? "" : " · Going public soon"}</p>
-            </>
-          );
-          return g.href
-            ? <a key={g.slot} data-card href={g.href} target="_blank" rel="noopener noreferrer" className="panel block p-4 transition-transform duration-150 hover:-translate-y-1">{body}</a>
-            : <div key={g.slot} data-card className="panel p-4">{body}</div>;
-        })}
-      </div>
-    </div>
+    <>
+      <h2 className="text-3xl leading-tight">This site</h2>
+      <Three
+        built="A static, prerendered React site with a hand-written WebGL figure, built with Claude Code."
+        broke="An audit found the old site's Kalman chart was hand-typed and its surface filled empty cells with made-up values."
+        learned="Charts should read model output directly, with the source linked, so anyone can check a claim."
+      />
+      <p className="mt-4"><Ext href={LINKS.site}>Repository</Ext></p>
+    </>
   );
 }
 
-export function OpenSource() {
+const DETAIL: Record<ProjectId, React.ReactNode> = {
+  kalman: <Kalman />, surface: <Surface />, wcomms: <WComms />, site: <ThisSite />,
+};
+
+export function Work({ project }: { project: ProjectId }) {
   return (
-    <div className="mt-6">
-      <p className="eyebrow mb-2">Open Source</p>
-      <article data-card className="panel flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between md:p-7">
-        <div className="max-w-2xl">
-          <p className="text-lg">Shared, near-real-time coordination for every Claude Code agent and person on a repo. Coordination only: nothing in it can trade, merge or deploy.</p>
-          <p className="num mt-2 text-sm text-muted">{W_COMMS_PUBLIC ? "MIT licensed · TypeScript · Cloudflare Workers" : "Going public soon"}</p>
+    <>
+      <div className="grid gap-6 border-b border-rule pb-8 md:grid-cols-[minmax(0,1fr)_340px] md:items-end">
+        <div>
+          <h1 className="text-5xl leading-none tracking-tight md:text-7xl">Arnav Nair</h1>
+          <p className="prose-w mt-4 text-xl leading-snug">
+            I do quantitative research in fixed income at Morgan Stanley, as an intern now and an analyst from January 2027. I build most of my research tools with LLM agents, and I publish the results that fail as well.
+          </p>
         </div>
-        <div className="shrink-0"><WCommsLink /></div>
-      </article>
-    </div>
+        <SurfaceFigure />
+      </div>
+      <div className="grid gap-6 pt-6 md:grid-cols-[190px_minmax(0,1fr)] md:gap-12 md:pt-8">
+        <nav aria-label="Projects" className="grid grid-cols-2 content-start gap-x-6 md:sticky md:top-20 md:block">
+          {(["Quant", "AI"] as const).map((group) => (
+            <div key={group} className="md:mb-6">
+              <h2 className="label">{group}</h2>
+              <ul>
+                {PROJECTS.filter((p) => p.group === group).map((p) => (
+                  <li key={p.id}><a className="index-link" href={`#${p.id}`} aria-current={p.id === project ? "true" : undefined}>{p.name}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+        <div id="project-detail" className="min-w-0 scroll-mt-4">
+          {PROJECTS.map((p) => <article key={p.id} hidden={p.id !== project}>{DETAIL[p.id]}</article>)}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function Food() {
+  return (
+    <>
+      <h1 className="text-5xl leading-none tracking-tight md:text-6xl">Food</h1>
+      <p className="mt-4 text-muted">Nothing here yet.</p>
+    </>
   );
 }
 
 export function Resume() {
   const [open, setOpen] = useState(false);
   return (
-    <div>
-      <SectionHead id="resume" eyebrow="Resume" title="Experience" />
-      <div className="mb-5 flex flex-wrap gap-3">
-        <a className="btn btn-primary" href={LINKS.resumePdf} download>Download PDF</a>
-        <button type="button" className="btn" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Hide PDF" : "View PDF inline"}</button>
-        <a className="btn" href={LINKS.resumePdf} target="_blank" rel="noopener noreferrer">Open in new tab</a>
+    <>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+        <h1 className="text-5xl leading-none tracking-tight md:text-6xl">Resume</h1>
+        <p className="flex flex-wrap gap-x-5">
+          <a className="link inline-flex min-h-[44px] items-center" href={LINKS.resumePdf} download>Download PDF</a>
+          <button type="button" className="link min-h-[44px]" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Hide PDF" : "View PDF here"}</button>
+        </p>
       </div>
-      {open && (
-        <iframe title="Arnav Nair resume PDF" src={LINKS.resumePdf} className="mb-8 h-[80dvh] w-full rounded-lg border border-line bg-paper" loading="lazy" />
-      )}
-      <ol className="grid gap-3">
+      {open && <iframe title="Arnav Nair resume PDF" src={LINKS.resumePdf} className="mt-4 h-[80dvh] w-full border border-rule bg-white" loading="lazy" />}
+      <ol className="mt-6 border-t border-rule">
         {experience.map((r, i) => (
-          <li key={r.title} data-card className="panel">
-            <details open={i === 1} className="group p-4 md:p-5">
-              <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline justify-between gap-x-4">
-                <span><span className="font-display text-xl font-bold">{r.org}</span><span className="mt-0.5 block text-sm font-semibold">{r.title}{r.place ? <span className="font-normal text-muted"> · {r.place}</span> : null}</span></span>
-                <span className="num text-sm text-muted">{r.dates}</span>
+          <li key={r.title} className="border-b border-rule">
+            <details open={i === 1} className="py-3">
+              <summary className="grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] md:grid-cols-[1.25rem_minmax(0,1fr)_auto] md:gap-x-6">
+                <span className="marker" aria-hidden="true" />
+                <span><span className="text-xl">{r.org}</span><span className="block text-base text-muted">{r.title}{r.place ? `, ${r.place}` : ""}</span></span>
+                <span className="label col-start-2 md:col-start-3">{r.dates}</span>
               </summary>
-              {r.note && <p className="mt-3 rounded-md border-l-2 border-sun pl-3 text-sm text-muted">{r.note}</p>}
-              {r.bullets.length > 0 && <ul className="mt-3 grid list-disc gap-2 pl-5 text-[0.95rem]">{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
+              <div className="prose-w pl-5 md:pl-[1.25rem]">
+                {r.note && <p className="mt-3 text-base text-muted">{r.note}</p>}
+                {r.bullets.length > 0
+                  ? <ul className="mt-3 grid list-disc gap-2 pl-5 text-base">{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
+                  : <p className="mt-3 text-base text-muted">Joining full-time after the internship.</p>}
+              </div>
             </details>
           </li>
         ))}
       </ol>
-      <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <div className="panel p-5 md:p-6">
-          <h3 className="font-display text-2xl font-bold">{education.school}</h3>
-          <p className="mt-1 font-semibold">{education.degree}</p>
-          <p className="num mt-1 text-sm text-muted">{education.dates}</p>
-          <p className="mt-2 text-sm">{education.detail}</p>
-          <p className="mt-2 text-sm text-muted">Coursework: {education.coursework}</p>
+      <div className="mt-8 grid gap-8 text-base md:grid-cols-2">
+        <div>
+          <h2 className="label">Education</h2>
+          <p className="mt-1 text-xl">{education.school}</p>
+          <p>{education.degree}, {education.dates}</p>
+          <p className="mt-1">{education.detail}</p>
+          <p className="mt-1 text-muted">{education.coursework}</p>
         </div>
-        <dl className="panel grid content-start gap-2 p-5 text-sm md:p-6">
-          {skills.map(([k, v]) => <div key={k}><dt className="inline font-semibold">{k}: </dt><dd className="inline text-muted">{v}</dd></div>)}
-        </dl>
+        <div>
+          <h2 className="label">Skills</h2>
+          <dl className="mt-1 grid gap-1">
+            {skills.map(([k, v]) => <div key={k}><dt className="inline font-semibold">{k}: </dt><dd className="inline text-muted">{v}</dd></div>)}
+          </dl>
+        </div>
       </div>
-    </div>
-  );
-}
-
-export function Food() {
-  return (
-    <div className="panel p-5">
-      <h2 className="font-display text-2xl font-bold">Food</h2>
-      <p className="text-muted">Coming later.</p>
-    </div>
+    </>
   );
 }
 
 export function Contact() {
   return (
-    <div>
-      <h2 id="contact-title" className="font-display text-5xl font-bold">Let's talk</h2>
-      <div className="mt-5 flex flex-wrap gap-3">
-        <a className="btn btn-primary" href={`mailto:${LINKS.email}`}>{LINKS.email}</a>
-        <ExtLink href={LINKS.linkedin}>LinkedIn</ExtLink>
-        <ExtLink href={LINKS.github}>GitHub</ExtLink>
+    <div className="flex flex-wrap items-start gap-8">
+      <div className="min-w-0 flex-1 basis-80">
+        <h1 className="text-5xl leading-none tracking-tight md:text-6xl">Contact</h1>
+        <ul className="mt-6 grid gap-1 text-xl">
+          <li><a className="link inline-flex min-h-[44px] items-center" href={`mailto:${LINKS.email}`}>{LINKS.email}</a></li>
+          <li><a className="link inline-flex min-h-[44px] items-center" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a className="link inline-flex min-h-[44px] items-center" href={LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
       </div>
-      <p className="mt-8 max-w-2xl text-sm text-muted">Background: implied σ of obesity threshold crossings from CDC data, strikes 25% to 40%, horizons 1 to 10 years. The wave motion is decorative. <a className="link" href="#food">Food</a> is coming later. © 2026 Arnav S. Nair.</p>
+      <img src={headshot} alt="Arnav Nair" width="160" height="160" loading="lazy" className="h-40 w-40 object-cover" />
     </div>
   );
 }
