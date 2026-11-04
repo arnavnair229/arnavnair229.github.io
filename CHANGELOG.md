@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0 (November 2026)
+
+- New CRT turn-on at the remote click: glowing dot, white line, the picture snaps open with a glitch, and phosphor glow and scanlines fade out.
+- The intro is harder to miss. It counts as seen only after the remote click or a Skip, leftover scroll momentum and stray key presses no longer cancel it, and clicks only cancel it on links and buttons.
+- Added a Replay intro link in the footer.
+
 ## 3.0.0 (November 2026)
 
 - Redesigned as a plain editorial page: paper background, one serif, one accent color, thin rules instead of cards.
