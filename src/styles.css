@@ -1,0 +1,66 @@
+@import "@fontsource-variable/bricolage-grotesque/index.css";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "@fontsource/ibm-plex-sans/latin-600.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-600.css";
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0a0a0c;
+  --color-panel: #141418;
+  --color-line: #2c2c33;
+  --color-paper: #f3f1ea;
+  --color-muted: #b0aea6;
+  --color-coral: #ff5a4f;
+  --color-sun: #ffd23f;
+  --font-display: "Bricolage Grotesque Variable", system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html { background: var(--color-ink); color: var(--color-paper); scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font-sans); line-height: 1.6; overflow-x: clip; }
+:focus-visible { outline: 3px solid var(--color-sun); outline-offset: 3px; border-radius: 4px; }
+a, button { touch-action: manipulation; }
+button { cursor: pointer; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.chart-text { font-size: 13px; }
+@media (max-width: 640px) { .chart-text { font-size: 24px; } }
+.panel { background: color-mix(in srgb, var(--color-panel) 93%, transparent); border: 1px solid var(--color-line); border-radius: 14px; }
+.eyebrow { font-family: var(--font-mono); font-size: .8125rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-sun); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .5rem 1.1rem; border-radius: 10px; font-weight: 600; border: 1px solid var(--color-line); background: var(--color-panel); transition: transform .15s ease-out, border-color .15s ease-out; }
+.btn:hover { border-color: var(--color-sun); transform: translateY(-1px); }
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--color-sun); color: var(--color-ink); border-color: var(--color-sun); }
+.link { color: var(--color-sun); text-decoration: underline; text-underline-offset: 3px; }
+
+.hero-scrim::before { content: ""; position: absolute; inset: 8% 0 4%; z-index: -1; background: radial-gradient(closest-side, rgb(10 10 12 / .94) 55%, transparent); }
+
+/* Intro: the nav waits, unfilled, for the mascot's cards to land. It stays clickable. */
+.intro-pending [data-nav]:not(.landed) { background: transparent; border-color: transparent; color: var(--color-muted); }
+.intro-pending .hero-mascot { transform: scale(.55); }
+.fly-card { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; visibility: hidden; will-change: transform; }
+
+/* Idle loops */
+.mascot-belly { transform-box: fill-box; transform-origin: 50% 60%; }
+.mascot-arm-l { transform-box: fill-box; transform-origin: 100% 40%; }
+.mascot-arm-r { transform-box: fill-box; transform-origin: 0% 40%; }
+.mascot-mouth { transform-box: fill-box; transform-origin: 50% 50%; }
+.mascot-root { transform-box: fill-box; transform-origin: 50% 100%; }
+.idle .mascot-belly { animation: breathe 3.6s ease-in-out infinite; }
+.snoring .mascot-zzz { animation: zzz 3.6s ease-in-out infinite; }
+.snoring .mascot-eye { transform-box: fill-box; transform-origin: center; transform: scaleY(.12); }
+@keyframes breathe { 50% { transform: scale(1.035, .975); } }
+@keyframes zzz { 0% { opacity: 0; transform: translate(0, 8px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -22px); } }
+
+/* Border characters only exist where the gutter is wide enough to keep them off the content. */
+.buddy { display: none; position: fixed; bottom: 24px; width: 104px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .3s ease-out; }
+.buddy-l { left: 20px; }
+.buddy-r { right: 20px; transform: scaleX(-1); }
+@media (min-width: 1480px) { .buddy { display: block; } }
+.buddies-on .buddy { opacity: 1; }
+.buddies-hidden .buddy { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

@@ -1,111 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant Portfolio - Arnav Nair</title>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <!-- Three.js Canvas (fixed background) -->
-  <canvas id="volatility-canvas" class="three-canvas"></canvas>
-
-  <!-- Surface overlay (title + info panel) -->
-  <div class="surface-overlay">
-    <div class="surface-title">US Health Volatility Surface</div>
-    <div class="surface-info">
-      <p class="surface-tagline">Quantitative finance meets public health &mdash; an implied volatility surface built from real CDC obesity data.</p>
-      <a href="https://github.com/arnavnair229/obesity-vol-surface" target="_blank" class="surface-cta">
-        Explore the research &rarr;
-      </a>
-    </div>
-  </div>
-
-  <!-- Content wrapper (above canvas) -->
-  <div class="content-wrapper">
-    <header>
-      <h1>Quantitative Research & Trading Portfolio</h1>
-      <p>Projects showcasing quantitative finance, algorithmic trading, and statistical modeling.</p>
-      <div class="social">
-        <a href="https://www.linkedin.com/in/arnav-nair-005b82250/" target="_blank">LinkedIn</a>
-      </div>
-    </header>
-
-    <section class="about">
-      <img src="Headshot.jpg" alt="Arnav Nair">
-      <div class="about-text">
-        <h2>About Me</h2>
-        <p>
-          Hi, I'm <strong>Arnav Nair</strong>, a quantitative researcher passionate about developing
-          systematic trading strategies and applying advanced statistical methods to financial markets.
-          My work spans from Kalman filtering and Markov Chains to options backtesting and statistical arbitrage.
-          I enjoy bridging the gap between theory and implementation, with an emphasis on risk management
-          and real-world applicability.
-        </p>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section class="experience">
-      <div class="experience-container">
-        <h2>Professional Experience</h2>
-        <div class="experience-item">
-          <div class="experience-header">
-            <h3>Morgan Stanley</h3>
-            <span class="tenure">2024 - Present</span>
-          </div>
-          <h4>Quantitative Research Analyst</h4>
-          <p class="team">Parametric Fixed Income Team</p>
-          <ul class="highlights">
-            <li>Building a Python Shiny dashboard for PMs and traders that unifies corporate, municipal, and treasury fixed-income data and powers mock portfolio buy/sell/hold trade evaluation—modeling impacts to yield, cash, duration/curve risk, maturity, sector/state allocation, tax-aware optimization.</li>
-            <li>Conducting early-stage preferred ETF flow/microstructure research across major preferred ETFs to inform an upcoming product launch, analyzing drivers of creation/redemption flows using regression frameworks tied to rates/curve, credit spreads, volatility, liquidity, and price–NAV dislocations.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="projects">
-      <div class="project" data-project="kalman">
-        <h2><a href="https://github.com/arnavnair229/kalman-filter-MR">Statistical Arbitrage with Kalman Filtering</a></h2>
-        <p>
-          Developed a pairs trading strategy using a Kalman filter to dynamically estimate the spread and hedge ratio between two
-          stocks. Backtested the strategy with ~60% win rate, and implemented hedging parameters to limit losses within the arbitrage framework.
-        </p>
-        <div class="viz-container" id="kalman-viz"></div>
-      </div>
-
-      <div class="project" data-project="markov">
-        <h2><a href="https://github.com/arnavnair229/markov-chain-strat">Markov Chain Market Regime Strategy (In Progress)</a></h2>
-        <p>
-          Constructed a Markov Chain model to capture transition probabilities between up and down market days.
-          Strategy identifies recurring patterns for directional trading while layering in hedging strategies.
-        </p>
-        <div class="viz-container" id="markov-viz"></div>
-      </div>
-
-      <div class="project" data-project="health-surface">
-        <h2><a href="https://github.com/arnavnair229/obesity-vol-surface">US Health Volatility Surface</a></h2>
-        <p>
-          Modeled US obesity prevalence as a latent underlying on the logit scale and constructed a
-          synthetic implied uncertainty surface by calibrating crossing probabilities of obesity thresholds
-          (25%&ndash;45%) across horizons (1&ndash;10y) using CDC BRFSS data. The background wireframe
-          visualizes this real (T, K) &rarr; &sigma; surface &mdash; a quant lens on public health risk.
-        </p>
-      </div>
-    </section>
-
-    <footer>
-      © 2025 Arnav S. Nair
-    </footer>
-  </div>
-
-  <!-- Dependencies -->
-  <script src="https://unpkg.com/three@0.152.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
-
-  <!-- Application Scripts -->
-  <script src="js/volatility-surface.js"></script>
-  <script src="js/project-visualizations.js"></script>
-  <script src="js/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arnav Nair | Quant × AI</title>
+    <meta name="description" content="Arnav Nair builds quantitative research systems with LLM agents. Fixed income at Morgan Stanley, prediction-market ML, open-source agent tooling, and honest backtests." />
+    <meta property="og:title" content="Arnav Nair | Quant × AI" />
+    <meta property="og:description" content="Quant research, LLM-built systems, and honest backtests." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://arnavnair229.github.io/" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      (function () {
+        var c = document.documentElement.classList;
+        var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) { c.add("reduce-motion"); return; }
+        var seen = false;
+        try { seen = sessionStorage.getItem("intro-seen") === "1"; } catch (e) {}
+        c.add("intro-pending");
+        c.add(seen ? "intro-short" : "intro-full");
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"><!--app--></div>
+    <script type="module" src="/src/entry-client.tsx"></script>
+  </body>
 </html>
