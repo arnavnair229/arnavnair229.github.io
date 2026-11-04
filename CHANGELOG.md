@@ -3,8 +3,8 @@
 ## 3.1.0 (November 2026)
 
 - New CRT turn-on at the remote click: glowing dot, white line, the picture snaps open with a glitch, and phosphor glow and scanlines fade out.
-- The intro is harder to miss. It counts as seen only after the remote click or a Skip, leftover scroll momentum and stray key presses no longer cancel it, and clicks only cancel it on links and buttons.
-- Added a Replay intro link in the footer.
+- The intro now plays on every load and refresh, but not when moving between tabs or returning with the back button. A shared link to a panel goes straight to that panel.
+- Leftover scroll momentum and stray key presses no longer cancel the intro, and clicks only cancel it on links and buttons. Skip sits at the bottom right.
 
 ## 3.0.0 (November 2026)
 

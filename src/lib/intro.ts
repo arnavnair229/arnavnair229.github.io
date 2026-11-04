@@ -1,4 +1,3 @@
-const SEEN_KEY = "intro-seen";
 const CLIP_URL = "/intro/hero-intro.webp";
 const CLIP_MS = 10333; // 124 frames at 12 fps
 const CLICK_MS = 6200; // the remote is raised and steady
@@ -7,31 +6,22 @@ const GRACE_MS = 1000; // leftover trackpad momentum shouldn't cancel the intro 
 const CRT_MS = 1500; // longest turn-on, plus a margin
 const END_KEYS = new Set(["Escape", "Enter", " ", "ArrowDown", "PageDown"]);
 
-function markSeen() {
-  try { sessionStorage.setItem(SEEN_KEY, "1"); } catch { /* private mode: replay is fine */ }
-}
-
 type Reveal = "full" | "fast" | "instant";
 
-/** Turn the site on like a CRT: dot, line, then the picture snaps open. `fast` is for repeat visits and Skip.
+/** Turn the site on like a CRT: dot, line, then the picture snaps open. `fast` is for Skip.
  *  `instant` is for interruptions: a press on a link must not squash the page, or the click is lost. */
 function turnOn(mode: Reveal) {
   const c = document.documentElement.classList;
-  c.remove("intro-full", "intro-short");
+  c.remove("intro-full");
   if (mode === "instant") return;
   c.add(mode === "fast" ? "tv-on-fast" : "tv-on");
   setTimeout(() => c.remove("tv-on", "tv-on-fast"), CRT_MS);
 }
 
-/** First visit: Arnav walks on, waves, clicks the remote, the site turns on, he walks off.
- *  Repeat visits get the turn-on alone. It only counts as seen once it has played or been skipped. */
+/** On every page load: Arnav walks on, waves, clicks the remote, the site turns on, he walks off.
+ *  Moving between tabs never reloads the page, so going back to Work doesn't replay it. */
 export function runIntro() {
-  // A replay link is a one-time request, so a later reload behaves normally.
-  if (location.search.includes("intro")) history.replaceState(null, "", location.pathname + location.hash);
-
-  const c = document.documentElement.classList;
-  if (c.contains("intro-short")) { turnOn("fast"); return; }
-  if (!c.contains("intro-full")) return;
+  if (!document.documentElement.classList.contains("intro-full")) return;
 
   const layer = document.getElementById("intro-layer");
   const skip = document.getElementById("skip-intro");
@@ -65,7 +55,6 @@ export function runIntro() {
     cleanup();
   }
   function skipNow() {
-    markSeen();
     reveal("fast");
     cleanup();
   }
@@ -100,7 +89,7 @@ export function runIntro() {
     if (revealed) return;
     clearTimeout(tooSlow);
     layer.append(img);
-    timers.push(window.setTimeout(() => { markSeen(); reveal("full"); }, CLICK_MS));
+    timers.push(window.setTimeout(() => reveal("full"), CLICK_MS));
     timers.push(window.setTimeout(cleanup, CLIP_MS));
   };
   img.src = CLIP_URL;

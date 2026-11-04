@@ -58,9 +58,6 @@ export default function App() {
             <section key={id} hidden={route.tab !== id} aria-label={id} className="mx-auto max-w-[1080px] px-5 pb-16 pt-8 md:pt-12">{node}</section>
           ))}
         </main>
-        <footer className="mx-auto max-w-[1080px] border-t border-rule px-5 py-3">
-          <a className="label inline-flex min-h-[44px] items-center underline underline-offset-2" href="/?intro">Replay intro</a>
-        </footer>
       </div>
     </>
   );

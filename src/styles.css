@@ -38,9 +38,9 @@ details[open] .marker::before { content: "–"; }
 
 /* Intro: a dark screen covers the content until the remote click. The header stays above it, one click away. */
 .tv-screen { display: none; position: fixed; inset: 0; z-index: 30; background: #0b0b0d; pointer-events: none; }
-.intro-full .tv-screen, .intro-short .tv-screen { display: block; }
-.intro-full .site-header, .intro-short .site-header { background: #0b0b0d; color: var(--color-paper); border-color: #0b0b0d; }
-.intro-full .site-header .tab[aria-current="page"], .intro-short .site-header .tab[aria-current="page"] { color: var(--color-paper); }
+.intro-full .tv-screen { display: block; }
+.intro-full .site-header { background: #0b0b0d; color: var(--color-paper); border-color: #0b0b0d; }
+.intro-full .site-header .tab[aria-current="page"] { color: var(--color-paper); }
 
 /* CRT turn-on, played as one timeline: dark, glowing dot, white line, the picture snaps open with a glitch, phosphor fades. */
 .tv-on { --crt: 1.25s; }
