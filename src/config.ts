@@ -20,15 +20,15 @@ export type Tab = (typeof TABS)[number]["id"];
 export const PROJECTS = [
   {
     id: "kalman", name: "Kalman pairs", link: "Code and full results", href: LINKS.kalman,
-    blurb: "A dynamic hedge ratio on EWH/EWZ. My first backtest had a 60% win rate. Then I removed the look-ahead and added next-day fills, costs and walk-forward parameter selection, and the edge went away.",
+    blurb: "At HD Fund I researched and built a Kalman filter statistical arbitrage strategy, backtested at a 60% win rate over 200+ trades and 3 years. I later re-tested the public repo version on EWH/EWZ with no look-ahead, next-day fills, costs and walk-forward parameter selection, and the edge went away.",
   },
   {
     id: "surface", name: "Obesity surface", link: "Code and data", href: LINKS.surface,
-    blurb: "I applied option-pricing tools to CDC state data: how likely obesity prevalence is to cross a level within a given horizon, inverted into an implied σ surface. Then I backtested it. A default setting in my model was flattening the curves, so forecasts of 68% were coming true 91% of the time. With it removed, they came true 65% of the time. On 2025, a year the models never saw, the fix won at 1 year and lost at 3, and the forecasts ran high at every horizon because the rise in obesity has paused. The probabilities are historical frequencies, so nothing here trades.",
+    blurb: "I applied option-pricing tools to CDC state data: how likely obesity prevalence is to cross a level within a given horizon, inverted into an implied σ surface. Then I backtested it. A default setting in my model was flattening the curves, so forecasts of 68% were coming true 91% of the time. With it removed, they came true 65% of the time. On 2025, a year the models never saw, the fix won at 1 year and lost at 3, and the forecasts ran high at every horizon, since the rise in obesity looks to have paused. The probabilities are historical frequencies, so nothing here trades.",
   },
   {
     id: "kalshi", name: "Kalshi trading",
-    blurb: "An ML trading system I co-developed in a two-person team with AI coding agents, running from data and signals through to order execution across Kalshi markets. The code is private, so I can't share more here. All returns are backtests, not live trading.",
+    blurb: "An end-to-end ML trading system across 9 Kalshi markets, co-developed in a two-person team with AI coding agents, from data and signals through to order execution. I authored 45 of 106 research reports, used deflated Sharpe, PBO, shuffle nulls and pre-registered holdouts to reject the top config of a 24k-trial search, and wrote a 40-finding audit of the backtester and execution engine. The code is private, and all returns are backtests, not live trading.",
   },
   {
     id: "wcomms", name: "W-Comms", link: "Repository", href: LINKS.wcomms,
@@ -36,7 +36,7 @@ export const PROJECTS = [
   },
   {
     id: "jagra", name: "Jagra", link: "Visit the site", href: LINKS.jagra,
-    blurb: "A teaser site for a premium, refrigerated, South Asian-inspired functional drinks brand. It tells the brand story, shows the three-bottle lineup and collects emails ahead of launch.",
+    blurb: "A functional, Indian-inspired beverage: heritage made healthy. This is its teaser site, with the three-bottle lineup and an email list ahead of launch.",
   },
 ] as const;
 export type ProjectId = (typeof PROJECTS)[number]["id"];

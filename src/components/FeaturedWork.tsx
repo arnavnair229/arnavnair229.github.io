@@ -28,7 +28,7 @@ const CARDS: { id: ProjectId; name: string; line: string; tone: string; art: Rea
     art: <img src={wcommsImg} alt="The W-Comms town dashboard, where each task is a tower its owner is building" decoding="async" className="object-cover object-left" />,
   },
   {
-    id: "jagra", name: "Jagra", line: "Teaser site for a South Asian-inspired functional drinks brand", tone: "fan-card-d",
+    id: "jagra", name: "Jagra", line: "A functional, Indian-inspired beverage: heritage made healthy", tone: "fan-card-d",
     art: <img src={jagraImg} alt="Three Jagra bottles: Masala Chai, Mango Lassi and Kesar Pista" decoding="async" className="object-cover object-bottom" />,
   },
 ];
