@@ -106,7 +106,7 @@ export function SurfaceTable() {
         </table>
       </div>
       <p className="label mt-2 prose-w">
-        Darker means higher σ. n/a means the crossing probability was outside 1% to 99%, so the cell is left empty. Implied forward: {forwards["1"]}% at 1y, {forwards["10"]}% at 10y.
+        Darker means higher σ. n/a means the crossing probability was outside 1% to 99%, so I left the cell empty. Implied forward: {forwards["1"]}% at 1y, {forwards["10"]}% at 10y.
       </p>
     </figure>
   );

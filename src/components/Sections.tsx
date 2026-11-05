@@ -48,7 +48,7 @@ function Kalman() {
     <>
       <h2 className="text-3xl leading-tight">Kalman-filter pairs trading</h2>
       <p className="prose-w mt-3">
-        A dynamic hedge ratio on EWH/EWZ. The first backtest showed a 60% win rate. After I removed look-ahead and added next-day fills, costs and walk-forward parameter selection, the pair has no tradable edge.
+        A dynamic hedge ratio on EWH/EWZ. My first backtest had a 60% win rate. Then I removed the look-ahead and added next-day fills, costs and walk-forward parameter selection, and the edge went away.
       </p>
       <Facts rows={[
         ["Sharpe", m.sharpe.toFixed(2), `95% CI ${m.sharpe_95ci[0].toFixed(2)} to ${m.sharpe_95ci[1].toFixed(2)}`],
@@ -58,7 +58,7 @@ function Kalman() {
       ]} />
       <EquityChart />
       <p className="prose-w mt-4 text-base text-muted">
-        5 bps per side, 0.5% a year short borrow, fills at the next close. Each quarter's parameters come from the prior two years only. Engle-Granger p-value on the selection window is {kalman.eg_p_formation.toFixed(2)}, so the pair is not cointegrated. With this few trades, the evidence is weak either way.
+        5 bps per side, 0.5% a year short borrow, fills at the next close. Each quarter's parameters come from the prior two years only. The Engle-Granger p-value on the selection window is {kalman.eg_p_formation.toFixed(2)}, so I can't call the pair cointegrated. With this few trades, the evidence is weak either way.
       </p>
       <p className="mt-4"><Ext href={LINKS.kalman}>Code and full results</Ext></p>
     </>
@@ -70,7 +70,7 @@ function Surface() {
     <>
       <h2 className="text-3xl leading-tight">US obesity threshold surface</h2>
       <p className="prose-w mt-3">
-        Option-pricing tools applied to CDC state data: how likely prevalence is to cross a level over a horizon, inverted into an implied σ surface. These are historical frequencies, not risk-neutral prices, and nothing here trades.
+        I applied option-pricing tools to CDC state data: how likely obesity prevalence is to cross a level within a given horizon, inverted into an implied σ surface. The probabilities are historical frequencies, so they aren't risk-neutral prices, and nothing here trades.
       </p>
       <div className="mt-6"><SurfaceTable /></div>
       <div className="prose-w mt-6 grid gap-3">
@@ -98,9 +98,9 @@ function WComms() {
       <h2 className="text-3xl leading-tight">W-Comms</h2>
       <p className="label mt-1">{W_COMMS_PUBLIC ? "Open source · MIT · TypeScript · Cloudflare Workers" : "Going public soon"}</p>
       <Three
-        built="A shared, near-real-time hub for Claude Code agents and the people working on one repo: a Cloudflare Worker and Durable Object, MCP tools, hooks, a voxel-town dashboard and a learning loop that humans approve. It only coordinates. Nothing in it can trade, merge or deploy."
+        built="A shared, near-real-time hub for Claude Code agents and the people working on one repo: a Cloudflare Worker and Durable Object, MCP tools, hooks, a voxel-town dashboard and a learning loop that people approve. It only coordinates: nothing in it can trade, merge or deploy."
         broke="Sign-in failures gave no usable error until I added exact OAuth diagnostics. The town feature took three rounds of review fixes before it merged."
-        learned="A hook's output is the only way into a running agent. Anything agents can share becomes instructions to the others, so humans approve it first."
+        learned="A hook's output is the only way into a running agent. A skill one agent writes becomes instructions for the others, so a person approves it before it spreads."
       />
       <p className="mt-4">{W_COMMS_PUBLIC ? <Ext href={W_COMMS_URL}>Repository</Ext> : "Link coming when it goes public."} <span className="text-muted">Live demo coming.</span></p>
     </>
@@ -113,8 +113,8 @@ function ThisSite() {
       <h2 className="text-3xl leading-tight">This site</h2>
       <Three
         built="A static, prerendered React site with a hand-written WebGL figure, built with Claude Code."
-        broke="An audit found the old site's Kalman chart was hand-typed and its surface filled empty cells with made-up values."
-        learned="Charts should read model output directly, with the source linked, so anyone can check a claim."
+        broke="An audit found the old site's Kalman chart was hand-typed, and its surface filled empty cells by copying their neighbors."
+        learned="Charts should read model output directly and link to the source, so anyone can check them."
       />
       <p className="mt-4"><Ext href={LINKS.site}>Repository</Ext></p>
     </>
@@ -132,7 +132,7 @@ export function Work({ project }: { project: ProjectId }) {
         <div>
           <h1 className="text-5xl leading-none tracking-tight md:text-7xl">Arnav Nair</h1>
           <p className="prose-w mt-4 text-xl leading-snug">
-            I do quantitative research in fixed income at Morgan Stanley, as an intern now and an analyst from January 2027. I build most of my research tools with LLM agents, and I publish the results that fail as well.
+            I do quantitative research in fixed income at Morgan Stanley, as an intern now and an analyst from January 2027. I build research tools with LLM agents, and I publish the results that fail too.
           </p>
         </div>
         <SurfaceFigure />

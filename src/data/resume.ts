@@ -50,7 +50,7 @@ export const experience: Role[] = [
     org: "Kalshi Quantitative Research & Systematic Trading",
     title: "Co-developer, two-person team; built with AI coding agents",
     dates: "July 2026 – Present",
-    note: "Project. Code is private, and all returns are backtests, not live trading results.",
+    note: "Project with private code. All returns are backtests, so none of them are live trading results.",
     bullets: [
       "Co-developed an end-to-end ML trading system across 9 Kalshi markets, covering the entire process from data and signal generation to order execution, engineered for real-world constraints (fills, data latency, order handling); walk-forward retraining on 3M intraday rows (5+ years, 10+ sources). Backtested +313% / +753% / +613% (2024 / 2025 / 2026 YTD) on a $2,000 account under adverse-fill stress; +314% for 2026 with realistic data latency.",
       "Authored 45 of 106 research reports and ran large-scale searches (24k trials; nine 2,000-trial Optuna studies; 13,600 walk-forward configs) under purged, embargoed CV; used deflated Sharpe, PBO, shuffle nulls, and pre-registered holdouts to reject the top config of a 24k-trial search.",
@@ -61,7 +61,7 @@ export const experience: Role[] = [
     org: "HD Fund, LLC",
     title: "Head Quantitative Analyst",
     dates: "March 2025 – October 2025",
-    note: "The public repo version of this strategy was later re-tested with costs and walk-forward selection. See Kalman pairs under Work.",
+    note: "I later re-tested the public repo version of this strategy with costs and walk-forward selection. See Kalman pairs under Work.",
     bullets: [
       "Researched, authored, and implemented a Kalman filter-based statistical arbitrage strategy, running robust backtests and achieving a 60% win rate while tuning entry and exit thresholds for 200+ trades over 3 years.",
       "Collaborated with fundamental analysts and quantitative developers to build a sentiment analysis ML model that produced revenue drivers for 15+ companies, improving accuracy of revenue forecasts by roughly 30%.",
