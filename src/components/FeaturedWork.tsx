@@ -16,7 +16,7 @@ const CARDS: { id: ProjectId; name: string; line: string; tone: string; art: Rea
   },
   { id: "surface", name: "Obesity surface", line: "Implied σ of US obesity thresholds, backtested on CDC data", tone: "fan-card-b", art: <VolCanvas className="absolute inset-0 h-full w-full" /> },
   {
-    id: "kalshi", name: "Kalshi trading", line: "ML trading system. Private code, and all results are backtests", tone: "fan-card-e",
+    id: "kalshi", name: "Kalshi trading", line: "ML system trading live markets, with strategies in paper trading", tone: "fan-card-e",
     art: (
       <dl className="grid h-full content-center gap-3 px-1">
         {KALSHI_FACTS.map(([v, k]) => <div key={k} className="flex items-baseline gap-3"><dd className="w-[4.5rem] flex-none text-4xl leading-none md:w-24 md:text-5xl">{v}</dd><dt className="label fan-line">{k}</dt></div>)}

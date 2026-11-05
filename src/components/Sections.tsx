@@ -12,7 +12,7 @@ export function Projects() {
         <div>
           <h1 className="text-4xl leading-none tracking-tight md:text-7xl">Arnav Nair</h1>
           <p className="prose-w mt-4 text-lg leading-snug md:text-xl">
-            I do quantitative research in fixed income at Morgan Stanley, as an intern now and an analyst from January 2027. I also enjoy using AI to develop ideas and bring them to fruition.
+            I'm a quantitative analyst at Morgan Stanley, shipping production code on the research team as an AI deployment engineer. I bridge the gap between the markets and what AI can do for them, through automation and data analysis.
           </p>
         </div>
         <img src={photo} alt="Arnav Nair in a red chair outside, holding a cup of ice cream" width="640" height="800" className="h-auto w-full rounded-2xl object-cover" />
@@ -49,7 +49,7 @@ export function Resume() {
         <h1 className="text-5xl leading-none tracking-tight md:text-7xl">Resume</h1>
         <p className="flex flex-wrap gap-2">
           <a className="pill" href={LINKS.resumePdf} download>Download PDF</a>
-          <button type="button" className="pill" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Hide PDF" : "View PDF here"}</button>
+          <button type="button" className="pill" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Hide PDF" : "View PDF"}</button>
         </p>
       </div>
       {open && <iframe title="Arnav Nair resume PDF" src={LINKS.resumePdf} className="mt-6 h-[80dvh] w-full rounded-2xl border border-rule bg-white" loading="lazy" />}
@@ -67,7 +67,7 @@ export function Resume() {
                   {r.note && <p className="text-base text-muted">{r.note}</p>}
                   {r.bullets.length > 0
                     ? <ul className={`grid list-disc gap-2 pl-5 text-base ${r.note ? "mt-3" : ""}`}>{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
-                    : <p className="text-base text-muted">Joining full-time after the internship.</p>}
+                    : <p className="text-base text-muted">Shipping production code on the research team as an AI deployment engineer, bridging the markets and AI through automation and data analysis.</p>}
                 </div>
               </div>
             </details>
