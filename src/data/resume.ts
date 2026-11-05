@@ -29,6 +29,7 @@ export const experience: Role[] = [
     title: "Quantitative Researcher Intern - Fixed Income",
     dates: "January 2026 – Present",
     place: "Boston, MA",
+    note: "Working part time until 2027, deploying AI within the team and pushing production code.",
     bullets: [
       "Built a Python Shiny order management tool for a newly launched SMA product after identifying gaps in Charles River's cross-asset (Corporate & Municipals) data and aggregate views; enables 3 PMs/Traders to evaluate trades across yield, duration/curve risk, cash impact, sector and state allocation, and tax-aware optimizations over 5 portfolios.",
       "Reduced RMSE by 5% on an ML-driven municipal bond bid-offer pricing engine by replacing AdaBoost with XGBoost and engineering new features; conducting ongoing research into hybrid deterministic and ML-based pricing layers to improve model robustness.",

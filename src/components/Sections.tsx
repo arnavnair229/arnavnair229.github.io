@@ -12,7 +12,7 @@ export function Projects() {
         <div>
           <h1 className="text-4xl leading-none tracking-tight md:text-7xl">Arnav Nair</h1>
           <p className="prose-w mt-4 text-lg leading-snug md:text-xl">
-            I'm a quantitative analyst at Morgan Stanley, shipping production code on the research team as an AI deployment engineer. I bridge the gap between the markets and what AI can do for them, through automation and data analysis.
+            I'm a Quantitative Researcher Intern in Fixed Income at Morgan Stanley, working part time before I join full time as a Quantitative Analyst in January 2027. I deploy AI within the team and push production code, bridging the gap between the markets and what AI can do for them through automation and data analysis.
           </p>
         </div>
         <img src={photo} alt="Arnav Nair in a red chair outside, holding a cup of ice cream" width="640" height="800" className="h-auto w-full rounded-2xl object-cover" />
@@ -67,7 +67,7 @@ export function Resume() {
                   {r.note && <p className="text-base text-muted">{r.note}</p>}
                   {r.bullets.length > 0
                     ? <ul className={`grid list-disc gap-2 pl-5 text-base ${r.note ? "mt-3" : ""}`}>{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
-                    : <p className="text-base text-muted">Shipping production code on the research team as an AI deployment engineer, bridging the markets and AI through automation and data analysis.</p>}
+                    : <p className="text-base text-muted">Joining full time after the internship.</p>}
                 </div>
               </div>
             </details>
