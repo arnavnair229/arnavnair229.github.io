@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.2.0 (November 2026)
+
+- New Featured work section on Projects: five project cards ride a shallow arc as you scroll. With reduced motion or no script, they're a plain grid.
+- Project panels and the side index are replaced by expanding tiles with a short blurb. A card or a shared project link opens its tile. Full results stay in each repo.
+- The surface figure is gone from the top of the page, with a photo beside the intro in its place.
+- Added Jagra, and Kalshi with no outside link because the code is private. Removed This site.
+- The tabs are now Projects, Resume, Food and Contact.
+- Resume restyled with rounded panels. The text is unchanged.
+
 ## 3.1.0 (November 2026)
 
 - New CRT turn-on at the remote click: glowing dot, white line, the picture snaps open with a glitch, and phosphor glow and scanlines fade out.

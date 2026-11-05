@@ -19,7 +19,7 @@ function turnOn(mode: Reveal) {
 }
 
 /** On every page load: Arnav walks on, waves, clicks the remote, the site turns on, he walks off.
- *  Moving between tabs never reloads the page, so going back to Work doesn't replay it. */
+ *  Moving between tabs never reloads the page, so going back to Projects doesn't replay it. */
 export function runIntro() {
   if (!document.documentElement.classList.contains("intro-full")) return;
 

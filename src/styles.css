@@ -18,23 +18,56 @@ body { font-family: var(--font-serif); font-size: 1.125rem; line-height: 1.55; o
 button { cursor: pointer; }
 a, button { touch-action: manipulation; }
 
-.num { font-family: var(--font-mono); font-size: .875rem; font-variant-numeric: tabular-nums; }
 .label { font-family: var(--font-mono); font-size: .8125rem; color: var(--color-muted); }
 .link { color: var(--color-accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .link:hover { text-decoration-thickness: 2px; }
 .prose-w { max-width: 62ch; }
 
-.tab, .index-link { display: inline-flex; align-items: center; min-height: 44px; }
-.tab:hover, .index-link:hover { color: var(--color-accent); }
-.tab[aria-current="page"], .index-link[aria-current="true"] { color: var(--color-accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
-
-.chart-text { font-size: 13px; font-family: var(--font-mono); }
-@media (max-width: 640px) { .chart-text { font-size: 24px; } }
+.tab { display: inline-flex; align-items: center; min-height: 44px; }
+.tab:hover { color: var(--color-accent); }
+.tab[aria-current="page"] { color: var(--color-accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
 
 details > summary { list-style: none; }
 details > summary::-webkit-details-marker { display: none; }
 .marker::before { content: "+"; font-family: var(--font-mono); color: var(--color-muted); }
 details[open] .marker::before { content: "–"; }
+
+/* Featured work: a tall section holds a pinned stage, and scrolling drives the cards from FeaturedWork.tsx. */
+.fan { height: calc(100dvh + 3000px); margin-bottom: 2rem; width: 100vw; margin-inline: calc(50% - 50vw); }
+.fan-stage { position: sticky; top: 0; height: 100dvh; overflow: clip; }
+.fan-title { position: absolute; top: 4.5rem; left: 0; right: 0; text-align: center; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -.02em; color: var(--color-rule); }
+.fan-track { position: absolute; inset: 0; }
+.fan-item { position: absolute; left: 50%; top: 58%; width: min(42vw, 76dvh); aspect-ratio: 5 / 4; transform: translate(-50%, -50%) translateX(150vw); will-change: transform; }
+.fan-card { display: flex; flex-direction: column; height: 100%; padding: 1.25rem; border-radius: 1.5rem; transition: translate .2s ease-out; }
+.fan-card:hover { translate: 0 -6px; }
+.fan-card:focus-visible { outline-offset: -6px; }
+.fan-card-a { background: linear-gradient(356deg, #f1e3d6, #e5b9a4 50%, #f1e3d6); }
+.fan-card-b { background: linear-gradient(356deg, #efe9d8, #dcd3b8 50%, #efe9d8); }
+.fan-card-c { background: linear-gradient(356deg, #2a2820, var(--color-ink) 50%, #2a2820); color: var(--color-paper); }
+.fan-card-d { background: linear-gradient(356deg, #4a1a14, #2c0d0b 50%, #4a1a14); color: var(--color-paper); }
+.fan-card-e { background: linear-gradient(356deg, #dfe4dc, #c3cec2 50%, #dfe4dc); }
+.fan-media { position: relative; flex: 1; min-height: 0; overflow: hidden; border-radius: .875rem; }
+.fan-media img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fan-line { color: inherit; }
+@media (max-width: 767px) {
+  .fan { height: calc(100dvh + 2400px); }
+  .fan-title { top: 6.5rem; }
+  .fan-item { width: min(82vw, 58dvh); aspect-ratio: 1; }
+  .fan-card { padding: 1rem; }
+}
+/* No motion or no script: the same cards as a plain grid. */
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .fan { height: auto; width: auto; margin-inline: 0; padding-block: 2rem; }
+  .fan-stage { position: static; height: auto; overflow: visible; }
+  .fan-title { position: static; text-align: left; font-size: 1.875rem; color: inherit; }
+  .fan-track { position: static; display: grid; gap: 1rem; margin-top: 1rem; }
+  .fan-item { position: static; width: auto; transform: none; }
+  @media (min-width: 768px) { .fan-track { grid-template-columns: repeat(2, 1fr); } }
+}
+
+.panel { border-radius: 1.25rem; background: #ece6d6; }
+.pill { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 1.125rem; border: 1px solid var(--color-ink); border-radius: 999px; font-size: 1rem; }
+.pill:hover { background: var(--color-ink); color: var(--color-paper); }
 
 /* Intro: a dark screen covers the content until the remote click. The header stays above it, one click away. */
 .tv-screen { display: none; position: fixed; inset: 0; z-index: 30; background: #0b0b0d; pointer-events: none; }
