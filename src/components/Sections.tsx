@@ -40,14 +40,6 @@ export function Projects() {
   );
 }
 
-export function Food() {
-  return (
-    <>
-      <h1 className="text-5xl leading-none tracking-tight md:text-6xl">Food</h1>
-      <p className="mt-4 text-muted">Nothing here yet.</p>
-    </>
-  );
-}
 
 export function Resume() {
   const [open, setOpen] = useState(false);

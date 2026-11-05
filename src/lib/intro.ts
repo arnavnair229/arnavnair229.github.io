@@ -1,6 +1,6 @@
 const CLIP_URL = "/intro/hero-intro.webp";
-const CLIP_MS = 10333; // 124 frames at 12 fps
-const CLICK_MS = 6200; // the remote is raised and steady
+const CLIP_MS = 8833; // 106 frames at 12 fps
+const CLICK_MS = 4700; // the remote is raised and steady
 const LOAD_LIMIT_MS = 4000; // past this, skip the clip instead of making people wait
 const GRACE_MS = 1000; // leftover trackpad momentum shouldn't cancel the intro on load
 const CRT_MS = 1500; // longest turn-on, plus a margin
