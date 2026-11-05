@@ -1,31 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { PROJECTS, TABS, type ProjectId, type Tab } from "./config";
-import { Contact, Food, Resume, Work } from "./components/Sections";
+import { PROJECTS, TABS, type Tab } from "./config";
+import { Contact, Food, Projects, Resume } from "./components/Sections";
 import { runIntro } from "./lib/intro";
 
-type Route = { tab: Tab; project: ProjectId };
-const DEFAULT_PROJECT: ProjectId = "kalman";
+const isProject = (hash: string) => PROJECTS.some((p) => `#${p.id}` === hash);
 
-function parse(hash: string, previous: ProjectId): Route {
-  const h = hash.slice(1);
-  if (PROJECTS.some((p) => p.id === h)) return { tab: "work", project: h as ProjectId };
-  if (TABS.some((t) => t.id === h)) return { tab: h as Tab, project: previous };
-  return { tab: "work", project: previous };
-}
+const parse = (hash: string): Tab => TABS.find((t) => `#${t.id}` === hash)?.id ?? "projects";
+
+/** Opens the tile the hash names and scrolls to it. */
+const showProject = () => requestAnimationFrame(() => {
+  const tile = document.querySelector<HTMLDetailsElement>(`details${location.hash}`);
+  if (!tile) return;
+  tile.open = true;
+  tile.scrollIntoView();
+});
 
 export default function App() {
   const main = useRef<HTMLElement>(null);
-  const [route, setRoute] = useState<Route>({ tab: "work", project: DEFAULT_PROJECT });
+  const [tab, setTab] = useState<Tab>("projects");
 
   useEffect(() => {
-    setRoute(parse(location.hash, DEFAULT_PROJECT));
+    setTab(parse(location.hash));
+    if (isProject(location.hash)) showProject();
     const onHash = () => {
-      const isProject = PROJECTS.some((p) => `#${p.id}` === location.hash);
-      setRoute((r) => parse(location.hash, r.project));
+      setTab(parse(location.hash));
       main.current?.focus({ preventScroll: true });
-      // On one-column layouts, the chosen project sits below the index, so go to it.
-      if (isProject && innerWidth < 768) requestAnimationFrame(() => document.getElementById("project-detail")?.scrollIntoView());
-      else if (!isProject) scrollTo(0, 0);
+      if (isProject(location.hash)) showProject();
+      else scrollTo(0, 0);
     };
     addEventListener("hashchange", onHash);
     runIntro();
@@ -33,7 +34,7 @@ export default function App() {
   }, []);
 
   const views: [Tab, React.ReactNode][] = [
-    ["work", <Work project={route.project} />], ["food", <Food />], ["resume", <Resume />], ["contact", <Contact />],
+    ["projects", <Projects />], ["resume", <Resume />], ["food", <Food />], ["contact", <Contact />],
   ];
 
   return (
@@ -47,15 +48,15 @@ export default function App() {
       <div className="site-shell">
         <header className="site-header sticky top-0 z-40 border-b border-rule bg-paper">
           <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-x-6 px-5">
-            <a href="#work" className="inline-flex min-h-[44px] items-center font-medium">Arnav Nair</a>
+            <a href="#projects" className="inline-flex min-h-[44px] items-center font-medium">Arnav Nair</a>
             <nav aria-label="Primary" className="flex gap-5">
-              {TABS.map((t) => <a key={t.id} className="tab" href={`#${t.id}`} aria-current={route.tab === t.id ? "page" : undefined}>{t.label}</a>)}
+              {TABS.map((t) => <a key={t.id} className="tab" href={`#${t.id}`} aria-current={tab === t.id ? "page" : undefined}>{t.label}</a>)}
             </nav>
           </div>
         </header>
         <main id="main" ref={main} tabIndex={-1} className="outline-none">
           {views.map(([id, node]) => (
-            <section key={id} hidden={route.tab !== id} aria-label={id} className="mx-auto max-w-[1080px] px-5 pb-16 pt-8 md:pt-12">{node}</section>
+            <section key={id} hidden={tab !== id} aria-label={id} className="mx-auto max-w-[1080px] px-5 pb-16 pt-8 md:pt-12">{node}</section>
           ))}
         </main>
       </div>
