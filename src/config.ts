@@ -24,7 +24,7 @@ export const PROJECTS = [
   },
   {
     id: "surface", name: "Obesity surface", link: "Code and data", href: LINKS.surface,
-    blurb: "I applied option-pricing tools to CDC state data: how likely obesity prevalence is to cross a level within a given horizon, inverted into an implied σ surface. Then I backtested it. A default setting in my model was flattening the curves, so forecasts of 68% were coming true 91% of the time. With it removed, they came true 65% of the time. On 2025, a year the models never saw, the fix won at 1 year and lost at 3, and the forecasts ran high at every horizon, since the rise in obesity looks to have paused. The probabilities are historical frequencies, so nothing here trades.",
+    blurb: "This comes from my concern about how Americans eat and what it's doing to their health. I treated CDC obesity data like an options market, pricing the chance of crossing each level by horizon. The forward curve points to 38% in 10 years, but spot has been flat since 2021, with 68% of adults overweight or obese. That plateau doesn't look like better eating: more adults now skip fruit and vegetables daily than in 2017. Each point of obesity is about 2.7 million adults and $5 billion a year in excess medical costs. Backtests show where the model fails, and my state-level food tests didn't confirm a causal link, so that remains a hypothesis. The probabilities are historical frequencies, so nothing here trades.",
   },
   {
     id: "kalshi", name: "Kalshi trading",
