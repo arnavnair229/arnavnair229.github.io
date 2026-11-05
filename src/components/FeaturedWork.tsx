@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import jagraImg from "../assets/card-jagra.webp";
-import kalmanImg from "../assets/card-kalman.webp";
 import wcommsImg from "../assets/card-wcomms.webp";
 import kalman from "../data/kalman.json";
 import type { ProjectId } from "../config";
+import { KalmanChart } from "./KalmanChart";
 import { VolCanvas } from "./VolCanvas";
 
 /** Figures from the resume. The code is private, so the tile has no link. */
@@ -12,9 +12,9 @@ const KALSHI_FACTS = [["9", "Kalshi markets"], ["3M", "intraday rows"], ["24k", 
 const CARDS: { id: ProjectId; name: string; line: string; tone: string; art: React.ReactNode }[] = [
   {
     id: "kalman", name: "Kalman pairs", line: `Walk-forward Sharpe of ${kalman.metrics.sharpe.toFixed(2)} after costs`, tone: "fan-card-a",
-    art: <img src={kalmanImg} alt={`Walk-forward backtest: growth of $1 ends at ${kalman.equity[kalman.equity.length - 1].v.toFixed(2)}`} decoding="async" className="bg-white object-contain" />,
+    art: <KalmanChart />,
   },
-  { id: "surface", name: "Obesity surface", line: "Implied σ of US obesity thresholds, from CDC data", tone: "fan-card-b", art: <VolCanvas className="absolute inset-0 h-full w-full" /> },
+  { id: "surface", name: "Obesity surface", line: "Implied σ of US obesity thresholds, backtested on CDC data", tone: "fan-card-b", art: <VolCanvas className="absolute inset-0 h-full w-full" /> },
   {
     id: "kalshi", name: "Kalshi trading", line: "ML trading system. Private code, and all results are backtests", tone: "fan-card-e",
     art: (

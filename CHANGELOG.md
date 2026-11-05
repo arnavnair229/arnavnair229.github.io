@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.0 (November 2026)
+
+- Surface data updated to the corrected fit, and the blurb now covers the backtest. The wireframe spans 35% to 37%, the strikes with data at every horizon.
+- Kalman card redrawn from the repo's results in the site's own style, so its labels stay readable on a phone.
+- The intro's click comes at 4.7s, down from 6.2s, and its outline is softer.
+- The Featured work section takes less scrolling.
+- Food tab hidden until it has content.
+
 ## 3.2.0 (November 2026)
 
 - New Featured work section on Projects: five project cards ride a shallow arc as you scroll. With reduced motion or no script, they're a plain grid.

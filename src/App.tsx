@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { PROJECTS, TABS, type Tab } from "./config";
-import { Contact, Food, Projects, Resume } from "./components/Sections";
+import { Contact, Projects, Resume } from "./components/Sections";
 import { runIntro } from "./lib/intro";
 
 const isProject = (hash: string) => PROJECTS.some((p) => `#${p.id}` === hash);
@@ -34,7 +34,7 @@ export default function App() {
   }, []);
 
   const views: [Tab, React.ReactNode][] = [
-    ["projects", <Projects />], ["resume", <Resume />], ["food", <Food />], ["contact", <Contact />],
+    ["projects", <Projects />], ["resume", <Resume />], ["contact", <Contact />],
   ];
 
   return (

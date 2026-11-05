@@ -19,6 +19,7 @@ function mul(a: number[], b: number[]) {
 const rotX = (a: number) => [1, 0, 0, 0, 0, Math.cos(a), Math.sin(a), 0, 0, -Math.sin(a), Math.cos(a), 0, 0, 0, 0, 1];
 const rotY = (a: number) => [Math.cos(a), 0, -Math.sin(a), 0, 0, 1, 0, 0, Math.sin(a), 0, Math.cos(a), 0, 0, 0, 0, 1];
 const DISTANCE = -17;
+const HEIGHT = 50; // sigma to scene units, for shape only: the figure has no axis
 const trans = (x: number, y: number, z: number) => [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
 
 /** One static frame of the same geometry on a 2D canvas, for devices without a real GPU. */
@@ -69,7 +70,7 @@ export function startVolCanvas(canvas: HTMLCanvasElement, reduced: boolean) {
     for (let c = 0; c <= cols; c++) {
       const u = c / cols;
       const v = r / rows;
-      verts.push((u - 0.5) * 13, sigmaAt(kMin + u * (kMax - kMin), tMin + v * (tMax - tMin)) * 20, (v - 0.5) * 11);
+      verts.push((u - 0.5) * 13, sigmaAt(kMin + u * (kMax - kMin), tMin + v * (tMax - tMin)) * HEIGHT, (v - 0.5) * 11);
     }
   for (let r = 0; r <= rows; r++)
     for (let c = 0; c <= cols; c++) {
