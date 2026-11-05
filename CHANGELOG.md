@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4.0 (November 2026)
+
+- The surface card now draws the chance of crossing each obesity level by horizon, from strikes of 30% to 42%, using the smoother model.
+- The surface blurb covers what the curve says about US health.
+- The bio keeps the resume title and describes the part-time AI work. The Kalshi copy covers live trading.
+
 ## 3.3.0 (November 2026)
 
 - Surface data updated to the corrected fit, and the blurb now covers the backtest. The wireframe spans 35% to 37%, the strikes with data at every horizon.

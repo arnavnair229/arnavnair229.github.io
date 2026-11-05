@@ -9,4 +9,4 @@
 | `public/intro/hero-intro.webp` | First-visit intro. Built by `scripts/build_intro.py` from the clips in `~/Desktop/portfolio-intro-handoff/source-clips`. Timing is set in `src/lib/intro.ts` | 960×549, transparent animated WebP | 2 MB |
 | `public/resume/Arnav_S_Nair_Resume.pdf` | Resume tab | | |
 
-The Kalman card is drawn from `src/data/kalman.json`, and the surface card from `src/data/surface.json`, a copy of `outputs/health-surface-data.json` in the surface repo. Project blurbs are in `src/config.ts`.
+The Kalman card is drawn from `src/data/kalman.json`, and the surface card from the crossing odds in `src/data/surface.json`, a copy of `outputs/health-surface-data.json` in the surface repo. Project blurbs are in `src/config.ts`.

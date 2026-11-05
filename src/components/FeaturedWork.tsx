@@ -14,7 +14,7 @@ const CARDS: { id: ProjectId; name: string; line: string; tone: string; art: Rea
     id: "kalman", name: "Kalman pairs", line: `Walk-forward Sharpe of ${kalman.metrics.sharpe.toFixed(2)} after costs`, tone: "fan-card-a",
     art: <KalmanChart />,
   },
-  { id: "surface", name: "Obesity surface", line: "Implied σ of US obesity thresholds, backtested on CDC data", tone: "fan-card-b", art: <VolCanvas className="absolute inset-0 h-full w-full" /> },
+  { id: "surface", name: "Obesity surface", line: "US obesity read like an options curve, and what it means for health", tone: "fan-card-b", art: <VolCanvas className="absolute inset-0 h-full w-full" /> },
   {
     id: "kalshi", name: "Kalshi trading", line: "ML system trading live markets, with strategies in paper trading", tone: "fan-card-e",
     art: (

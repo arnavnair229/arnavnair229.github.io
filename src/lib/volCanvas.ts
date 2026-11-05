@@ -1,4 +1,4 @@
-import { maturities, sigmaAt, strikes, validCols } from "./surface";
+import { crossingAt, maturities, strikes } from "./surface";
 
 const VS = `attribute vec3 p; uniform mat4 m; uniform float t; varying float h; varying float d;
 void main(){ vec3 q=p; q.y+=0.09*sin(p.x*1.1+t)*cos(p.z*0.9+t*0.7);
@@ -19,7 +19,7 @@ function mul(a: number[], b: number[]) {
 const rotX = (a: number) => [1, 0, 0, 0, 0, Math.cos(a), Math.sin(a), 0, 0, -Math.sin(a), Math.cos(a), 0, 0, 0, 0, 1];
 const rotY = (a: number) => [Math.cos(a), 0, -Math.sin(a), 0, 0, 1, 0, 0, Math.sin(a), 0, Math.cos(a), 0, 0, 0, 0, 1];
 const DISTANCE = -17;
-const HEIGHT = 50; // sigma to scene units, for shape only: the figure has no axis
+const HEIGHT = 3.2; // crossing odds of 100% reach this height in the scene
 const trans = (x: number, y: number, z: number) => [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
 
 /** One static frame of the same geometry on a 2D canvas, for devices without a real GPU. */
@@ -59,8 +59,8 @@ function drawStatic(canvas: HTMLCanvasElement, verts: number[], idx: number[]) {
 export function startVolCanvas(canvas: HTMLCanvasElement, reduced: boolean) {
   const cols = 28;
   const rows = 18;
-  const kMin = strikes[validCols[0]];
-  const kMax = strikes[validCols[validCols.length - 1]];
+  const kMin = strikes[0];
+  const kMax = strikes[strikes.length - 1];
   const tMin = maturities[0];
   const tMax = maturities[maturities.length - 1];
 
@@ -70,7 +70,7 @@ export function startVolCanvas(canvas: HTMLCanvasElement, reduced: boolean) {
     for (let c = 0; c <= cols; c++) {
       const u = c / cols;
       const v = r / rows;
-      verts.push((u - 0.5) * 13, sigmaAt(kMin + u * (kMax - kMin), tMin + v * (tMax - tMin)) * HEIGHT, (v - 0.5) * 11);
+      verts.push((u - 0.5) * 13, crossingAt(kMin + u * (kMax - kMin), tMin + v * (tMax - tMin)) * HEIGHT, (v - 0.5) * 11);
     }
   for (let r = 0; r <= rows; r++)
     for (let c = 0; c <= cols; c++) {
