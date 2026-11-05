@@ -28,7 +28,7 @@ export const PROJECTS = [
   },
   {
     id: "kalshi", name: "Kalshi trading",
-    blurb: "An end-to-end ML trading system across 9 Kalshi markets, co-developed in a two-person team with AI coding agents, from data and signals through to order execution. I authored 45 of 106 research reports, used deflated Sharpe, PBO, shuffle nulls and pre-registered holdouts to reject the top config of a 24k-trial search, and wrote a 40-finding audit of the backtester and execution engine. The code is private, and all returns are backtests, not live trading.",
+    blurb: "An end-to-end ML trading system across 9 Kalshi markets, co-developed in a two-person team with AI coding agents, from data and signals through to order execution. I authored 45 of 106 research reports, used deflated Sharpe, PBO, shuffle nulls and pre-registered holdouts to reject the top config of a 24k-trial search, and wrote a 40-finding audit of the backtester and execution engine. We now trade live markets and paper trade strategies. The code is private, and the returns on my resume are backtests, not live results.",
   },
   {
     id: "wcomms", name: "W-Comms", link: "Repository", href: LINKS.wcomms,

@@ -29,6 +29,7 @@ export const experience: Role[] = [
     title: "Quantitative Researcher Intern - Fixed Income",
     dates: "January 2026 – Present",
     place: "Boston, MA",
+    note: "Working part time until 2027, deploying AI within the team and pushing production code.",
     bullets: [
       "Built a Python Shiny order management tool for a newly launched SMA product after identifying gaps in Charles River's cross-asset (Corporate & Municipals) data and aggregate views; enables 3 PMs/Traders to evaluate trades across yield, duration/curve risk, cash impact, sector and state allocation, and tax-aware optimizations over 5 portfolios.",
       "Reduced RMSE by 5% on an ML-driven municipal bond bid-offer pricing engine by replacing AdaBoost with XGBoost and engineering new features; conducting ongoing research into hybrid deterministic and ML-based pricing layers to improve model robustness.",
@@ -50,7 +51,7 @@ export const experience: Role[] = [
     org: "Kalshi Quantitative Research & Systematic Trading",
     title: "Co-developer, two-person team; built with AI coding agents",
     dates: "July 2026 – Present",
-    note: "Project with private code. All returns are backtests, so none of them are live trading results.",
+    note: "Private code. We now trade live markets and paper trade strategies. The returns below are backtests, not live results.",
     bullets: [
       "Co-developed an end-to-end ML trading system across 9 Kalshi markets, covering the entire process from data and signal generation to order execution, engineered for real-world constraints (fills, data latency, order handling); walk-forward retraining on 3M intraday rows (5+ years, 10+ sources). Backtested +313% / +753% / +613% (2024 / 2025 / 2026 YTD) on a $2,000 account under adverse-fill stress; +314% for 2026 with realistic data latency.",
       "Authored 45 of 106 research reports and ran large-scale searches (24k trials; nine 2,000-trial Optuna studies; 13,600 walk-forward configs) under purged, embargoed CV; used deflated Sharpe, PBO, shuffle nulls, and pre-registered holdouts to reject the top config of a 24k-trial search.",
@@ -72,7 +73,7 @@ export const experience: Role[] = [
 export const skills = [
   ["Python", "Polars, Pandas, Scikit-learn, NumPy, SciPy, Shiny, Streamlit, FastAPI"],
   ["ML", "XGBoost, Optuna, linear regression, clustering"],
-  ["Also", "C++, SQL, AWS, Snowflake, Tableau, LLM agents and harness design, AI-assisted development"],
+  ["Other", "C++, SQL, AWS, Snowflake, Tableau, LLM agents and harness design, AI-assisted development"],
   ["Certifications", "SOA Exam P (Score: 9), WSP: Excel, Accounting & Financial Statement Analysis, Bond & Math Analysis"],
   ["Languages", "English, Mandarin, Hindi"],
 ] as const;
