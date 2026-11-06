@@ -62,7 +62,7 @@ export const experience: Role[] = [
     org: "HD Fund, LLC",
     title: "Head Quantitative Analyst",
     dates: "March 2025 – October 2025",
-    note: "I later re-tested the public repo version of this strategy with costs and walk-forward selection. See Kalman pairs under Projects.",
+    note: "I later re-tested the public repo version of this strategy with costs and walk-forward selection. See Kalman pairs under Technical Projects.",
     bullets: [
       "Researched, authored, and implemented a Kalman filter-based statistical arbitrage strategy, running robust backtests and achieving a 60% win rate while tuning entry and exit thresholds for 200+ trades over 3 years.",
       "Collaborated with fundamental analysts and quantitative developers to build a sentiment analysis ML model that produced revenue drivers for 15+ companies, improving accuracy of revenue forecasts by roughly 30%.",

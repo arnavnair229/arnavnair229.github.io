@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.5.0 (November 2026)
+
+- Tabs are now Portfolio, Technical Projects, Culinary and Contact.
+- Portfolio has the hero, the project cards and the expandable resume.
+- Technical Projects shows each project's art, blurb and link.
+- Culinary tells the Jagra story, with a scroll-driven fade and a background that flows from paper to maroon. It ends on Coming soon.
+- Contact has a cut-out portrait beside a list of email, phone, LinkedIn and GitHub.
+
 ## 3.4.0 (November 2026)
 
 - The surface card now draws the chance of crossing each obesity level by horizon, from strikes of 30% to 42%, using the smoother model.

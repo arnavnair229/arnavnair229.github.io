@@ -1,11 +1,11 @@
 import { useState } from "react";
-import headshot from "../assets/about-headshot.jpg";
+import portrait from "../assets/contact-portrait.webp";
 import photo from "../assets/hero-photo.webp";
 import { LINKS, PROJECTS } from "../config";
 import { education, experience, skills } from "../data/resume";
-import { FeaturedWork } from "./FeaturedWork";
+import { CARDS, FeaturedWork } from "./FeaturedWork";
 
-export function Projects() {
+export function Portfolio({ showJagra }: { showJagra: boolean }) {
   return (
     <>
       <div className="grid grid-cols-[minmax(0,1fr)_32%] items-center gap-4 border-b border-rule pb-8 md:grid-cols-[minmax(0,1fr)_260px] md:gap-12">
@@ -17,36 +17,42 @@ export function Projects() {
         </div>
         <img src={photo} alt="Arnav Nair in a red chair outside, holding a cup of ice cream" width="640" height="800" className="h-auto w-full rounded-2xl object-cover" />
       </div>
-      <FeaturedWork />
-      <h2 className="label">More on each project</h2>
-      <div className="mt-3 grid items-start gap-3 md:grid-cols-2">
-        {PROJECTS.map((p) => (
-          <details
-            key={p.id} id={p.id} className="panel scroll-mt-24"
-            onToggle={(e) => { if (!e.currentTarget.open && location.hash === `#${p.id}`) history.replaceState(null, "", "#projects"); }}
-          >
-            <summary className="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 p-5">
-              <span className="text-2xl leading-tight">{p.name}</span>
-              <span className="marker" aria-hidden="true" />
-            </summary>
-            <div className="px-5 pb-5 text-base">
-              <p>{p.blurb}</p>
-              {"href" in p && <p className="mt-3"><a className="link" href={p.href} target="_blank" rel="noopener noreferrer">{p.link}</a></p>}
-            </div>
-          </details>
-        ))}
+      <FeaturedWork showJagra={showJagra} />
+      <Resume />
+    </>
+  );
+}
+
+export function TechnicalProjects() {
+  return (
+    <>
+      <h1 className="text-5xl leading-none tracking-tight md:text-7xl">Technical Projects</h1>
+      <div className="mt-8 grid gap-3">
+        {PROJECTS.map((p) => {
+          const card = CARDS.find((c) => c.id === p.id);
+          return (
+            <article key={p.id} id={p.id} className="panel grid scroll-mt-24 items-start gap-5 p-5 md:grid-cols-[minmax(0,340px)_minmax(0,1fr)]">
+              <div className={`tech-art ${card?.tone}`}><div className="fan-media">{card?.art}</div></div>
+              <div className="prose-w text-base">
+                <h2 className="text-3xl leading-tight">{p.name}</h2>
+                <p className="label mt-1">{card?.line}</p>
+                <p className="mt-3">{p.blurb}</p>
+                {"href" in p && <p className="mt-3"><a className="link" href={p.href} target="_blank" rel="noopener noreferrer">{p.link}</a></p>}
+              </div>
+            </article>
+          );
+        })}
       </div>
     </>
   );
 }
 
-
-export function Resume() {
+function Resume() {
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <section id="resume" aria-labelledby="resume-title" className="scroll-mt-24">
       <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
-        <h1 className="text-5xl leading-none tracking-tight md:text-7xl">Resume</h1>
+        <h2 id="resume-title" className="text-5xl leading-none tracking-tight md:text-7xl">Resume</h2>
         <p className="flex flex-wrap gap-2">
           <a className="pill" href={LINKS.resumePdf} download>Download PDF</a>
           <button type="button" className="pill" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Hide PDF" : "View PDF"}</button>
@@ -76,35 +82,46 @@ export function Resume() {
       </ol>
       <div className="mt-3 grid gap-3 text-base md:grid-cols-2">
         <div className="panel p-5">
-          <h2 className="label">Education</h2>
+          <h3 className="label">Education</h3>
           <p className="mt-2 text-2xl leading-tight">{education.school}</p>
           <p className="mt-1">{education.degree}, {education.dates}</p>
           <p className="mt-1">{education.detail}</p>
           <p className="mt-1 text-muted">{education.coursework}</p>
         </div>
         <div className="panel p-5">
-          <h2 className="label">Skills</h2>
+          <h3 className="label">Skills</h3>
           <dl className="mt-2 grid gap-1">
             {skills.map(([k, v]) => <div key={k}><dt className="inline font-semibold">{k}: </dt><dd className="inline text-muted">{v}</dd></div>)}
           </dl>
         </div>
       </div>
-    </>
+    </section>
   );
 }
 
 export function Contact() {
+  const rows = [
+    { key: "Email", value: LINKS.email, href: `mailto:${LINKS.email}` },
+    { key: "Phone", value: LINKS.phone, href: `tel:+1${LINKS.phone.replace(/\D/g, "")}` },
+    { key: "LinkedIn", value: "arnav-nair-005b82250", href: LINKS.linkedin, external: true },
+    { key: "GitHub", value: "arnavnair229", href: LINKS.github, external: true },
+  ];
   return (
-    <div className="flex flex-wrap items-start gap-8">
-      <div className="min-w-0 flex-1 basis-80">
+    <div className="contact">
+      <img src={portrait} alt="Arnav Nair in a navy blazer" width="1000" height="880" className="contact-portrait" />
+      <div>
         <h1 className="text-5xl leading-none tracking-tight md:text-6xl">Contact</h1>
-        <ul className="mt-6 grid gap-1 text-xl">
-          <li><a className="link inline-flex min-h-[44px] items-center" href={`mailto:${LINKS.email}`}>{LINKS.email}</a></li>
-          <li><a className="link inline-flex min-h-[44px] items-center" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a className="link inline-flex min-h-[44px] items-center" href={LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <ul className="contact-list mt-6">
+          {rows.map((r) => (
+            <li key={r.key}>
+              <a className="contact-row" href={r.href} {...(r.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                <span className="contact-key">{r.key}</span>
+                <span className="contact-value">{r.value}</span>
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
-      <img src={headshot} alt="Arnav Nair" width="160" height="160" loading="lazy" className="h-40 w-40 object-cover" />
     </div>
   );
 }
