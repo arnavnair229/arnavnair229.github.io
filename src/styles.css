@@ -15,6 +15,7 @@
 html { background: var(--color-paper); color: var(--color-ink); -webkit-text-size-adjust: 100%; }
 body { font-family: var(--font-serif); font-size: 1.125rem; line-height: 1.55; overflow-x: clip; }
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+main:focus-visible { outline: none; } /* Focus moves here on tab changes, and the whole page shouldn't get a ring. */
 button { cursor: pointer; }
 a, button { touch-action: manipulation; }
 
@@ -66,6 +67,39 @@ details[open] .marker::before { content: "–"; }
 }
 
 .panel { border-radius: 1.25rem; background: #ece6d6; }
+.tech-art { display: flex; aspect-ratio: 5 / 4; padding: .75rem; border-radius: 1rem; }
+
+/* Contact: the portrait has no background of its own and dissolves into the page at the bottom. */
+.contact { display: grid; align-items: center; justify-content: center; gap: 1.5rem; min-height: calc(100dvh - 12rem); }
+.contact-portrait { width: min(70vw, 40dvh); height: auto; margin-inline: auto; mask-image: linear-gradient(#000 76%, transparent 100%); }
+.contact-list { width: min(100%, 30rem); margin-inline: auto; border-top: 1px solid var(--color-rule); }
+.contact-row { display: flex; flex-direction: column; justify-content: center; min-height: 4.5rem; padding-block: .625rem; border-bottom: 1px solid var(--color-rule); transition: color .2s ease-out, padding-left .2s ease-out; }
+.contact-row:hover { color: var(--color-accent); padding-left: .5rem; }
+.contact-key { font-size: 1rem; line-height: 1.3; color: var(--color-muted); }
+.contact-value { font-size: clamp(1.25rem, 2.2vw, 1.625rem); line-height: 1.25; overflow-wrap: anywhere; }
+@media (min-width: 768px) {
+  .contact { grid-template-columns: auto minmax(0, 30rem); gap: clamp(2rem, 5vw, 4.5rem); }
+  .contact-portrait { width: min(34vw, 58dvh); }
+}
+
+/* Culinary: each scene's gradient starts where the last one ended, so the page flows from paper down to Jagra's maroon. */
+.scene { padding: clamp(2rem, 6dvh, 3.5rem) 1.25rem; }
+.scene-inner { max-width: 1080px; margin-inline: auto; }
+.story-note { font-size: 1rem; line-height: 1.35; }
+.scene-1 { background: linear-gradient(var(--color-paper), #f1e3d6); padding-top: clamp(1.5rem, 4dvh, 2.5rem); }
+.scene-2 { background: linear-gradient(#f1e3d6, #e9c8b1); }
+.scene-3 { background: linear-gradient(#e9c8b1, #e5b9a4); }
+.scene-4 { background: linear-gradient(#e5b9a4, #b9745a 9dvh, #6b2a1e 19dvh, #4a1a14 27dvh, #2c0d0b 100%); padding-top: 30dvh; color: var(--color-paper); }
+.scene-5 { display: grid; place-items: center; min-height: 100dvh; background: radial-gradient(ellipse 70% 50% at 50% 50%, #4a1a14, #2c0d0b); color: var(--color-paper); text-align: center; }
+.story-photo { width: 100%; height: auto; max-height: 58dvh; object-fit: cover; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(transparent, #000 7%, #000 93%, transparent); mask-composite: intersect; }
+.story-title { font-size: clamp(3.5rem, 9vw, 6.5rem); line-height: 1; letter-spacing: -.02em; }
+.story-h2 { font-size: clamp(2.25rem, 4.5vw, 3.5rem); line-height: 1.05; letter-spacing: -.02em; }
+.story-text { max-width: 36ch; font-size: clamp(1.1875rem, 1.7vw, 1.375rem); line-height: 1.4; }
+.story-soon { font-size: clamp(3.5rem, 13vw, 10rem); line-height: 1; letter-spacing: -.02em; color: transparent; background: linear-gradient(100deg, var(--color-paper), #e5b9a4 55%, var(--color-paper)); background-clip: text; -webkit-background-clip: text; }
+.story-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.story-link:hover { text-decoration-thickness: 2px; }
+/* Culinary.tsx drives these from the scroll position, and the short transition smooths out wheel steps. */
+.flow { transition: opacity .35s ease-out, translate .35s ease-out; will-change: opacity, translate; }
 .pill { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 1.125rem; border: 1px solid var(--color-ink); border-radius: 999px; font-size: 1rem; }
 .pill:hover { background: var(--color-ink); color: var(--color-paper); }
 

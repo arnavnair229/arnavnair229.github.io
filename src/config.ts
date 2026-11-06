@@ -1,5 +1,6 @@
 export const LINKS = {
   email: "arnavnair229@gmail.com",
+  phone: "(609) 203-0694",
   linkedin: "https://www.linkedin.com/in/arnav-nair-005b82250/",
   github: "https://github.com/arnavnair229",
   resumePdf: "/resume/Arnav_S_Nair_Resume.pdf",
@@ -10,13 +11,14 @@ export const LINKS = {
 };
 
 export const TABS = [
-  { id: "projects", label: "Projects" },
-  { id: "resume", label: "Resume" },
+  { id: "portfolio", label: "Portfolio" },
+  { id: "technical", label: "Technical Projects" },
+  { id: "culinary", label: "Culinary" },
   { id: "contact", label: "Contact" },
 ] as const;
 export type Tab = (typeof TABS)[number]["id"];
 
-/** The tiles under the featured cards. Edit the blurbs here. */
+/** The Technical Projects tab. Edit the blurbs here. */
 export const PROJECTS = [
   {
     id: "kalman", name: "Kalman pairs", link: "Code and full results", href: LINKS.kalman,
@@ -33,10 +35,6 @@ export const PROJECTS = [
   {
     id: "wcomms", name: "W-Comms", link: "Repository", href: LINKS.wcomms,
     blurb: "A shared, near-real-time hub for Claude Code agents and the people working on one repo, with a voxel-town dashboard and a learning loop that people approve. It only coordinates: nothing in it can trade, merge or deploy.",
-  },
-  {
-    id: "jagra", name: "Jagra", link: "Visit the site", href: LINKS.jagra,
-    blurb: "A functional, Indian-inspired beverage: heritage made healthy. This is its teaser site, with the three-bottle lineup and an email list ahead of launch.",
   },
 ] as const;
 export type ProjectId = (typeof PROJECTS)[number]["id"];
