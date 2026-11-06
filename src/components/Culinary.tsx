@@ -4,12 +4,7 @@ import community from "../assets/jagra-community.webp";
 import lab from "../assets/jagra-lab.webp";
 import { LINKS } from "../config";
 
-const fade = (edge0: number, edge1: number, x: number) => {
-  const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
-  return t * t * (3 - 2 * t);
-};
-
-/** Words and photos ease in as they near the middle of the screen and ease out as they leave it, in both directions. */
+/** Words and photos dissolve at the top and bottom of the screen, whichever way you scroll. The fades are set per element, in screen position. */
 function useFlow() {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -19,14 +14,14 @@ function useFlow() {
     const place = () => {
       frame = 0;
       if (!root.current?.offsetHeight) return;
-      const middle = innerHeight / 2;
+      const header = document.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
+      const vh = innerHeight;
+      const zone = vh * 0.2;
+      // The first scene starts right under the header, so the top fade grows in once scrolling begins.
+      const topZone = zone * Math.min(1, scrollY / zone);
       items.forEach((el) => {
-        // Offsets ignore the translate below, so the movement can't feed back into itself.
-        let top = 0;
-        for (let n: HTMLElement | null = el; n; n = n.offsetParent as HTMLElement | null) top += n.offsetTop;
-        const d = (top - scrollY + el.offsetHeight / 2 - middle) / (innerHeight * 0.72);
-        el.style.opacity = String(1 - fade(0.6, 1.08, Math.abs(d)));
-        el.style.translate = `0 ${Math.max(-1, Math.min(1, d)) * 44}px`;
+        const top = el.getBoundingClientRect().top;
+        el.style.maskImage = `linear-gradient(transparent ${header - top}px, #000 ${header + topZone - top}px, #000 ${vh - zone - top}px, transparent ${vh - top}px)`;
       });
     };
     const queue = () => { frame ||= requestAnimationFrame(place); };
@@ -46,9 +41,8 @@ export function Culinary() {
       <div className="scene scene-1">
         <div className="scene-inner grid items-center gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-10">
           <div className="flow">
-            <p className="story-note">Culinary</p>
-            <h1 className="story-title mt-1"><a className="story-link" href="#jagra">Jagra</a></h1>
-            <p className="story-text mt-4">Heritage made healthy. A functional, Indian-inspired beverage I'm building with my co-founder, Yuvraj.</p>
+            <h1 className="story-title"><a className="story-link" href="#jagra">Jagra</a></h1>
+            <p className="story-text mt-4">Heritage made healthy. A functional, Indian-inspired beverage I'm building with my co-founder, Yuvraj. The idea goes back further than the first bottle.</p>
           </div>
           <figure className="flow">
             <img src={community} alt="A group on a lawn, with two people kneeling in front holding up Jagra bottles" width="1600" height="932" loading="lazy" className="story-photo" />
@@ -58,35 +52,35 @@ export function Culinary() {
       </div>
 
       <div className="scene scene-2">
-        <div className="scene-inner grid items-center gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-10">
-          <figure className="flow md:order-none order-last">
-            <img src={bottles} alt="Three early Jagra bottles on a glass table, labeled Heritage Made Healthy" width="992" height="888" loading="lazy" className="story-photo" />
-            <figcaption className="story-note mt-2">Early bottles, labels on.</figcaption>
-          </figure>
-          <div className="flow">
-            <h2 className="story-h2">Tradition shouldn't have to come loaded.</h2>
-            <p className="story-text mt-4 !max-w-[42ch]">I realized there aren't many traditional drinks and foods in the Indian community that aren't juiced up with added processed sugar and unhealthy fats. Yuvraj and I are on a mission to build a brand that changes that.</p>
-          </div>
+        <div className="scene-inner flow mx-auto !max-w-[58ch] text-center">
+          <h2 className="story-h2">It started at home.</h2>
+          <p className="story-text mt-4 !max-w-none">My dad loves to cook and loves to eat. Slowly, I picked up the same passion and the same intuition, and I kept exploring new cuisines and flavors. I've always had a knack for cooking, and it turned into optimizing ingredients for health without sacrificing taste.</p>
         </div>
       </div>
 
       <div className="scene scene-3">
-        <div className="scene-inner flow mx-auto !max-w-[58ch] text-center">
-          <h2 className="story-h2">It started at home.</h2>
-          <p className="story-text mt-4 !max-w-none">My dad loves to cook and loves to eat. Slowly, I picked up the same passion and the same intuition, and I kept exploring new cuisines and flavors. I've always had a knack for cooking. Optimizing ingredients for health without sacrificing taste is how I ended up on this track.</p>
+        <div className="scene-inner grid items-center gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-10">
+          <figure className="flow order-last md:order-none">
+            <img src={bottles} alt="Three early Jagra bottles on a glass table, labeled Heritage Made Healthy" width="992" height="888" loading="lazy" className="story-photo" />
+            <figcaption className="story-note mt-2">Early bottles, labels on.</figcaption>
+          </figure>
+          <div className="flow">
+            <h2 className="story-h2">Tradition shouldn't come at a cost.</h2>
+            <p className="story-text mt-4 !max-w-[42ch]">That's when I realized there aren't many traditional drinks and foods in the Indian community that aren't juiced up with added processed sugar and unhealthy fats. So Yuvraj and I set out on a mission to build a brand that changes that.</p>
+          </div>
         </div>
       </div>
 
       <div className="scene scene-4">
-        <div className="scene-inner grid items-center gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-10">
-          <figure className="flow order-last md:order-none">
+        <div className="scene-inner grid items-center gap-6 md:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] md:gap-10">
+          <div className="flow">
+            <h2 className="story-h2">In the lab.</h2>
+            <p className="story-text mt-4">That mission has us developing the flavors, figuring out our brand image and talking to manufacturers to get a product out there.</p>
+          </div>
+          <figure className="flow">
             <img src={lab} alt="Two people in a kitchen, with a laptop and ingredients on the counter between them" width="1052" height="1124" loading="lazy" className="story-photo" />
             <figcaption className="story-note mt-2">The lab, for now, is a kitchen counter.</figcaption>
           </figure>
-          <div className="flow">
-            <h2 className="story-h2">In the lab.</h2>
-            <p className="story-text mt-4">We've been developing the flavors, figuring out our brand image and talking to manufacturers to get a product out there.</p>
-          </div>
         </div>
       </div>
 

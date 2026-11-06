@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.5.1 (November 2026)
+
+- Culinary now runs Jagra, home, tradition, the lab, then Coming soon, with copy that leads from one part to the next.
+- The background stays in a soft cream to terracotta range, and content dissolves at the top and bottom of the screen.
+- The Featured work title is black, and resume bullets use the full width of their boxes.
+
 ## 3.5.0 (November 2026)
 
 - Tabs are now Portfolio, Technical Projects, Culinary and Contact.
