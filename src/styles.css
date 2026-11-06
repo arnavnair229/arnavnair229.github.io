@@ -36,7 +36,7 @@ details[open] .marker::before { content: "–"; }
 /* Featured work: a tall section holds a pinned stage, and scrolling drives the cards from FeaturedWork.tsx. */
 .fan { height: calc(100dvh + 1800px); margin-bottom: 2rem; width: 100vw; margin-inline: calc(50% - 50vw); }
 .fan-stage { position: sticky; top: 0; height: 100dvh; overflow: clip; }
-.fan-title { position: absolute; top: 4.5rem; left: 0; right: 0; text-align: center; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -.02em; color: var(--color-rule); }
+.fan-title { position: absolute; top: 4.5rem; left: 0; right: 0; text-align: center; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -.02em; color: var(--color-ink); }
 .fan-track { position: absolute; inset: 0; }
 .fan-item { position: absolute; left: 50%; top: 58%; width: min(42vw, 76dvh); aspect-ratio: 5 / 4; transform: translate(-50%, -50%) translateX(150vw); will-change: transform; }
 .fan-card { display: flex; flex-direction: column; height: 100%; padding: 1.25rem; border-radius: 1.5rem; transition: translate .2s ease-out; }
@@ -82,24 +82,22 @@ details[open] .marker::before { content: "–"; }
   .contact-portrait { width: min(34vw, 58dvh); }
 }
 
-/* Culinary: each scene's gradient starts where the last one ended, so the page flows from paper down to Jagra's maroon. */
+/* Culinary: each scene's gradient starts where the last one ended, so the page drifts from paper to a soft terracotta. */
 .scene { padding: clamp(2rem, 6dvh, 3.5rem) 1.25rem; }
 .scene-inner { max-width: 1080px; margin-inline: auto; }
 .story-note { font-size: 1rem; line-height: 1.35; }
-.scene-1 { background: linear-gradient(var(--color-paper), #f1e3d6); padding-top: clamp(1.5rem, 4dvh, 2.5rem); }
-.scene-2 { background: linear-gradient(#f1e3d6, #e9c8b1); }
-.scene-3 { background: linear-gradient(#e9c8b1, #e5b9a4); }
-.scene-4 { background: linear-gradient(#e5b9a4, #b9745a 9dvh, #6b2a1e 19dvh, #4a1a14 27dvh, #2c0d0b 100%); padding-top: 30dvh; color: var(--color-paper); }
-.scene-5 { display: grid; place-items: center; min-height: 100dvh; background: radial-gradient(ellipse 70% 50% at 50% 50%, #4a1a14, #2c0d0b); color: var(--color-paper); text-align: center; }
+.scene-1 { background: linear-gradient(var(--color-paper), #f3e9db); padding-top: clamp(1.5rem, 4dvh, 2.5rem); }
+.scene-2 { background: linear-gradient(#f3e9db, #efdfcd); }
+.scene-3 { background: linear-gradient(#efdfcd, #e9d0bb); }
+.scene-4 { background: linear-gradient(#e9d0bb, #e4c3aa); }
+.scene-5 { display: grid; place-items: center; min-height: 100dvh; background: linear-gradient(#e4c3aa, #dfb79c); text-align: center; }
 .story-photo { width: 100%; height: auto; max-height: 58dvh; object-fit: cover; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(transparent, #000 7%, #000 93%, transparent); mask-composite: intersect; }
 .story-title { font-size: clamp(3.5rem, 9vw, 6.5rem); line-height: 1; letter-spacing: -.02em; }
 .story-h2 { font-size: clamp(2.25rem, 4.5vw, 3.5rem); line-height: 1.05; letter-spacing: -.02em; }
 .story-text { max-width: 36ch; font-size: clamp(1.1875rem, 1.7vw, 1.375rem); line-height: 1.4; }
-.story-soon { font-size: clamp(3.5rem, 13vw, 10rem); line-height: 1; letter-spacing: -.02em; color: transparent; background: linear-gradient(100deg, var(--color-paper), #e5b9a4 55%, var(--color-paper)); background-clip: text; -webkit-background-clip: text; }
+.story-soon { font-size: clamp(3.5rem, 13vw, 10rem); line-height: 1; letter-spacing: -.02em; color: transparent; background: linear-gradient(100deg, #2c0d0b, #7a2f20 55%, #2c0d0b); background-clip: text; -webkit-background-clip: text; }
 .story-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .story-link:hover { text-decoration-thickness: 2px; }
-/* Culinary.tsx drives these from the scroll position, and the short transition smooths out wheel steps. */
-.flow { transition: opacity .35s ease-out, translate .35s ease-out; will-change: opacity, translate; }
 .pill { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 1.125rem; border: 1px solid var(--color-ink); border-radius: 999px; font-size: 1rem; }
 .pill:hover { background: var(--color-ink); color: var(--color-paper); }
 

@@ -69,10 +69,10 @@ function Resume() {
                 <span className="marker col-start-2 row-start-1 text-right md:col-start-3" aria-hidden="true" />
               </summary>
               <div className="px-5 pb-5">
-                <div className="prose-w">
+                <div>
                   {r.note && <p className="text-base text-muted">{r.note}</p>}
                   {r.bullets.length > 0
-                    ? <ul className={`grid list-disc gap-2 pl-5 text-base ${r.note ? "mt-3" : ""}`}>{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
+                    ? <ul className={`grid list-disc gap-3 pl-5 text-base leading-relaxed md:text-[1.0625rem] ${r.note ? "mt-3" : ""}`}>{r.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
                     : <p className="text-base text-muted">Joining full time after the internship.</p>}
                 </div>
               </div>
